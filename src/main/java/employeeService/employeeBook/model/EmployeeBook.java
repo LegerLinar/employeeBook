@@ -3,7 +3,7 @@ package employeeService.employeeBook.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmployeeBook {
+public class EmployeeBook{
 
     public EmployeeBook() {
     }
@@ -12,7 +12,7 @@ public class EmployeeBook {
         return employeeMap;
     }
 
-    private static final Map<String, Employee> employeeMap = new HashMap<>(Map.of(
+    private static Map<String, Employee> employeeMap = new HashMap<>(Map.of(
             "Кисложопкин Аркадий Васильевич",
             new Employee("Кисложопкин", "Аркадий", "Васильевич", "1", 35000),
             "Селиванов Акакий Александрович",

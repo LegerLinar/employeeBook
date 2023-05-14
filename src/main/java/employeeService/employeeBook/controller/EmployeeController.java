@@ -14,54 +14,60 @@ import java.util.Set;
 @RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
-    public EmployeeController(EmployeeService employeeService){
+
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
     @GetMapping(path = "/printAll")
-    public String printAllEmployeesData(){
+    public String printAllEmployeesData() {
         return employeeService.printAllEmployeesData().toString();
     }
+
     @GetMapping(path = "/totalmonthsalary")
-    public int countMonthSalaryExpenses(){
+    public int countMonthSalaryExpenses() {
         return employeeService.countMonthSalaryExpenses();
     }
+
     @GetMapping(path = "/minsalary")
-    public String findEmployeeWithMinSalary(){
+    public String findEmployeeWithMinSalary() {
         return "Сотрудник с самой низкой заработной платой: " +
                 employeeService.findEmployeeMinSalary();
     }
+
     @GetMapping(path = "/averagesalary")
-    public String countAverageMonthSalary(){
+    public String countAverageMonthSalary() {
 
         return "Средняя заработная плата сотрудников: " +
                 employeeService.countAverageMonthSalary();
     }
 
     @GetMapping(path = "/maxsalary")
-    public String findEmployeeWMaxSalary(){
+    public String findEmployeeWMaxSalary() {
         return "Сотрудник с самой высокой заработной платой: " +
                 employeeService.findEmployeeMaxSalary();
     }
+
     @GetMapping(path = "/employeenames")
-    public String showEmployeesNames(){
+    public String showEmployeesNames() {
         return "Все сотрудники - " +
                 employeeService.showEmployeesNames();
     }
 
     @GetMapping(path = "/whoearnless", params = {"salary"})
-    public String whoEarnLess(@RequestParam int salary){
+    public String whoEarnLess(@RequestParam int salary) {
         Set<Employee> employeeSet = employeeService.searchWhoEarnLess(salary);
-        if (employeeSet.isEmpty()){
+        if (employeeSet.isEmpty()) {
             return "Никто не зарабатывает меньше " + salary;
         }
         return "Меньше " + salary + " зарабатывает: " +
                 employeeSet;
     }
+
     @GetMapping(path = "/whoearnmore", params = {"salary"})
-    public String whoEarnMore(@RequestParam int salary){
+    public String whoEarnMore(@RequestParam int salary) {
         Set<Employee> employeeSet = employeeService.searchWhoEarnLess(salary);
-        if (employeeSet.isEmpty()){
+        if (employeeSet.isEmpty()) {
             return "Никто не зарабатывает больше " + salary;
         }
         return "Больше " + salary + " зарабатывает: " +
@@ -71,12 +77,19 @@ public class EmployeeController {
     @GetMapping(path = "/search")
     public String searchEmployee(@RequestParam("surname") String surname,
                                  @RequestParam("name") String name,
-                                 @RequestParam("patron") String patron){
+                                 @RequestParam("patron") String patron) {
         return "" + employeeService.searchEmployee(surname, name, patron);
     }
-    @GetMapping(path="/search")
-    public String searchEmployeeById(@RequestParam("id") int id){
+
+    @GetMapping(path = "/search", params = {"id"})
+    public String searchEmployeeById(@RequestParam("id") int id) {
         return "" + employeeService.searchEmployee(id);
     }
 
+    @GetMapping(path = "/indexsalary")
+    public String toIndexSalary(@RequestParam("index")int index){
+        employeeService.toIndexSalary(index);
+        return "Зарплата всех сотрудников увеличена на " + index;
+
+    }
 }

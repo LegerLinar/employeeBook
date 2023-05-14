@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeBook employeeBook = new EmployeeBook();
     private Map<String, Employee> employeeMap = employeeBook.employeeBook();
 
@@ -21,6 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Collection<Employee> printAllEmployeesData() {
         return employeeMap.values();
     }
+
     @Override
     public int countMonthSalaryExpenses() {
         int max = employeeMap.values().stream().
@@ -34,32 +35,34 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee findEmployeeMinSalary() {
 
         final int employeeWithMinSalary =
-        employeeMap.values().stream().
-                map(e -> e.getSalary()).
-                min(Comparator.naturalOrder()).
-                get();
-        return  employeeMap.values().stream().
+                employeeMap.values().stream().
+                        map(e -> e.getSalary()).
+                        min(Comparator.naturalOrder()).
+                        get();
+        return employeeMap.values().stream().
                 filter(e -> e.getSalary() == employeeWithMinSalary).
                 findFirst().get();
 
 
     }
+
     @Override
     public Employee findEmployeeMaxSalary() {
-       int max = employeeMap.values().stream().
-               map(e -> e.getSalary()).
-               max(Comparator.naturalOrder()).get();
+        int max = employeeMap.values().stream().
+                map(e -> e.getSalary()).
+                max(Comparator.naturalOrder()).get();
 
-       return employeeMap.values().stream().
-               filter(e -> e.getSalary() == max).
-               findFirst().get();
+        return employeeMap.values().stream().
+                filter(e -> e.getSalary() == max).
+                findFirst().get();
     }
+
     @Override
     public double countAverageMonthSalary() {
-       return employeeMap.values().stream().
-              map(e -> e.getSalary()).
-              mapToInt(Integer::intValue).
-              average().getAsDouble();
+        return employeeMap.values().stream().
+                map(e -> e.getSalary()).
+                mapToInt(Integer::intValue).
+                average().getAsDouble();
     }
 
     @Override
@@ -71,9 +74,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Set<Employee> searchWhoEarnLess(int salary) {
 
         return
-        employeeMap.values().stream().
-                filter(e -> e.getSalary() < salary).
-                collect(Collectors.toSet());
+                employeeMap.values().stream().
+                        filter(e -> e.getSalary() < salary).
+                        collect(Collectors.toSet());
     }
 
     @Override
@@ -94,7 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Employee searchEmployee(int id) {
 
-       return employeeMap.values().stream().
+        return employeeMap.values().stream().
                 filter(e -> e.getId() == id).
                 findFirst().
                 get();
@@ -102,11 +105,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public void toIndexSalary(int percent) {
+
         int increaseAmount;
         for (Employee employee : employeeMap.values()) {
             increaseAmount = employee.getSalary() * percent / 100;
             employee.setSalary(employee.getSalary() + increaseAmount);
         }
+
     }
 
     @Override
@@ -138,7 +143,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void changeEmployeesSalary(String surname,
                                       String name,
-        String patronymic,
+                                      String patronymic,
                                       int changeSalary) {
 
         Employee employee = searchEmployee(surname, name, patronymic);
