@@ -29,6 +29,14 @@ public class EmployeeController {
     }
     @GetMapping(path = "/minsalary")
     public String findEmployeeWithMinSalary(){
-        return employeeService.findEmployeeMinSalary().toString();
+        return "Сотрудник с самой низкой заработной платой" +
+                employeeService.findEmployeeMinSalary();
     }
+    @GetMapping(path = "/averagesalary")
+    public String countAverageMonthSalary(){
+
+        return "Средняя заработная плата сотрудников" +
+                employeeService.countAverageMonthSalary();
+    }
+
 }

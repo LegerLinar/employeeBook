@@ -25,7 +25,7 @@ public interface EmployeeService {
     int countMonthSalaryExpenses();
     Employee findEmployeeMinSalary();
     String findEmployeeMaxSalary();
-    int countAverageMonthSalary();
+    double countAverageMonthSalary();
 
     public void changeEmployeesSalary(String surname,
                                       String name,
