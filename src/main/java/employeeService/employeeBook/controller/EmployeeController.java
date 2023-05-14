@@ -118,4 +118,13 @@ public class EmployeeController {
 
         return "Сотрудник удален";
     }
+
+    @GetMapping(path = "/remove", params = {"id"})
+    public String removeEmployee(@RequestParam("id") int id){
+        employeeService.dismissEmployee(id);
+
+        return "Сотрудник удален";
+    }
+
+
 }
