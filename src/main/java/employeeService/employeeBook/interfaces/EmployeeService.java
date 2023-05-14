@@ -3,6 +3,7 @@ package employeeService.employeeBook.interfaces;
 import employeeService.employeeBook.model.Employee;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface EmployeeService {
     public Employee searchEmployee(String surname,
@@ -41,7 +42,7 @@ public interface EmployeeService {
     void changeEmployeeDepartment(int id, String department);
     void toIndexSalary(int percent);
     Collection<Employee> printAllEmployeesData();
-    void showEmployeesNames();
+    Set<String> showEmployeesNames();
     void printWhoEarnLess(int salary);
     void printWhoEarnMore(int salary);
 

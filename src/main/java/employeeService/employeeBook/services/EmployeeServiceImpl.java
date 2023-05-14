@@ -62,11 +62,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public void showEmployeesNames() {
-        StringBuilder employeesString = new StringBuilder();
-        for (String employee : employeeMap.keySet()) {
-            System.out.println(employee);
-        }
+    public Set<String> showEmployeesNames() {
+        return employeeMap.keySet();
     }
 
     @Override

@@ -44,7 +44,11 @@ public class EmployeeController {
         return "Сотрудник с самой высокой заработной платой: " +
                 employeeService.findEmployeeMaxSalary();
     }
-
+    @GetMapping(path = "/employeenames")
+    public String showEmployeesNames(){
+        return "Все сотрудники - " +
+                employeeService.showEmployeesNames();
+    }
 
 
 }
