@@ -99,15 +99,12 @@ public class EmployeeController {
                                  @RequestParam("patronymic") String patronymic,
                                  @RequestParam("department") String department,
                                  @RequestParam("salary") int salary) {
-        final Employee added = employeeService.addNewEmployee(
+        employeeService.addNewEmployee(
                 surname,
                 name,
                 patronymic,
                 department,
                 salary);
-        if(added == null){
-            throw new RuntimeException("Не удалось добавить сотрундика");
-        }
         return "Новый сотрудник успешно добавлен";
     }
 }
