@@ -1,7 +1,7 @@
 package employeeService.employeeBook.services;
 
-import employeeService.employeeBook.employeeBook.Employee;
-import employeeService.employeeBook.employeeBook.EmployeeBook;
+import employeeService.employeeBook.model.Employee;
+import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
 
 import java.util.Map;

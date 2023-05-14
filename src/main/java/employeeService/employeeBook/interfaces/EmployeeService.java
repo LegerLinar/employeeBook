@@ -1,6 +1,6 @@
 package employeeService.employeeBook.interfaces;
 
-import employeeService.employeeBook.employeeBook.Employee;
+import employeeService.employeeBook.model.Employee;
 
 public interface EmployeeService {
     public Employee searchEmployee(String surname,

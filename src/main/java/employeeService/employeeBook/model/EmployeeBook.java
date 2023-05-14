@@ -1,4 +1,4 @@
-package employeeService.employeeBook.employeeBook;
+package employeeService.employeeBook.model;
 
 import java.util.HashMap;
 import java.util.Map;

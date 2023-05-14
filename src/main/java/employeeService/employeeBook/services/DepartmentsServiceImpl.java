@@ -1,11 +1,12 @@
 package employeeService.employeeBook.services;
 
-import employeeService.employeeBook.employeeBook.Employee;
-import employeeService.employeeBook.employeeBook.EmployeeBook;
+import employeeService.employeeBook.interfaces.DepartmentsService;
+import employeeService.employeeBook.model.Employee;
+import employeeService.employeeBook.model.EmployeeBook;
 
 import java.util.*;
 
-public class DepartmentsServiceImpl {
+public class DepartmentsServiceImpl implements DepartmentsService {
     private Map<String, Employee> employeeMap = (Map<String, Employee>) new EmployeeBook();
     private EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 
@@ -112,7 +113,6 @@ public class DepartmentsServiceImpl {
             System.out.println(employee.getEmployeeInitials() + ", заработная плата - " + employee.getSalary() + "руб. id - " + employee.getId());
         }
     }
-
 
 
     public void printAllDepartmentPersonnel() {
