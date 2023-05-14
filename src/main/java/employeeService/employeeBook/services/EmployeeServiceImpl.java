@@ -17,8 +17,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Set<String> printAllEmployeesData() {
-        return employeeMap.keySet();
+    public Collection<Employee> printAllEmployeesData() {
+        return employeeMap.values();
     }
     @Override
     public int countMonthSalaryExpenses() {
@@ -44,16 +44,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     }
     @Override
-    public String findEmployeeMaxSalary() {
-        int maxSalary = 0;
-        String employeeWithMaxSalary = "";
-        for (Employee employee : employeeMap.values()) {
-            if (employee.getSalary() > maxSalary) {
-                maxSalary = employee.getSalary();
-                employeeWithMaxSalary = employee.toString();
-            }
-        }
-        return employeeWithMaxSalary;
+    public Employee findEmployeeMaxSalary() {
+       int max = employeeMap.values().stream().
+               map(e -> e.getSalary()).
+               max(Comparator.naturalOrder()).get();
+
+       return employeeMap.values().stream().
+               filter(e -> e.getSalary() == max).
+               findFirst().get();
     }
     @Override
     public double countAverageMonthSalary() {

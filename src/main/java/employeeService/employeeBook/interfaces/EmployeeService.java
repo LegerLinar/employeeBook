@@ -2,7 +2,7 @@ package employeeService.employeeBook.interfaces;
 
 import employeeService.employeeBook.model.Employee;
 
-import java.util.Set;
+import java.util.Collection;
 
 public interface EmployeeService {
     public Employee searchEmployee(String surname,
@@ -24,7 +24,7 @@ public interface EmployeeService {
 
     int countMonthSalaryExpenses();
     Employee findEmployeeMinSalary();
-    String findEmployeeMaxSalary();
+    Employee findEmployeeMaxSalary();
     double countAverageMonthSalary();
 
     public void changeEmployeesSalary(String surname,
@@ -40,7 +40,7 @@ public interface EmployeeService {
                                   String department);
     void changeEmployeeDepartment(int id, String department);
     void toIndexSalary(int percent);
-    Set<String> printAllEmployeesData();
+    Collection<Employee> printAllEmployeesData();
     void showEmployeesNames();
     void printWhoEarnLess(int salary);
     void printWhoEarnMore(int salary);
