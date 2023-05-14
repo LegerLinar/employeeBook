@@ -6,6 +6,7 @@ import employeeService.employeeBook.interfaces.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -67,33 +68,19 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public void printWhoEarnLess(int salary) {
-        System.out.println("Сотрудники зарабатывающие менее " + salary + " руб.");
-        int existCounter = 0;
-        for (Employee employee : employeeMap.values()) {
-            if (employee.getSalary() < salary) {
-                existCounter = employee.getSalary();
-                System.out.println(employee);
-            }
-        }
-        if (existCounter == 0) {
-            System.out.println("Сотрудников с зарплатой ниже " + salary + "руб. нет");
-        }
+    public Set<Employee> searchWhoEarnLess(int salary) {
+
+        return
+        employeeMap.values().stream().
+                filter(e -> e.getSalary() < salary).
+                collect(Collectors.toSet());
     }
 
     @Override
     public void printWhoEarnMore(int salary) {
-        System.out.println("Сотрудники зарабатывающие более " + salary + " руб.");
-        int existCounter = 0;
-        for (Employee employee : employeeMap.values()) {
-            if (employee.getSalary() >= salary) {
-                existCounter = employee.getSalary();
-                System.out.println(employee);
-            }
-        }
-        if (existCounter == 0) {
-            System.out.println("Сотрудников с зарплатой выше или равной " + salary + "руб. нет");
-        }
+        employeeMap.values().stream().
+                filter(e -> e.getSalary() > salary).
+                collect(Collectors.toSet());
     }
 
     @Override

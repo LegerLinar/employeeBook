@@ -5,10 +5,9 @@ import employeeService.employeeBook.interfaces.EmployeeService;
 import employeeService.employeeBook.model.Employee;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -48,6 +47,25 @@ public class EmployeeController {
     public String showEmployeesNames(){
         return "Все сотрудники - " +
                 employeeService.showEmployeesNames();
+    }
+
+    @GetMapping(path = "/whoearnless", params = {"salary"})
+    public String whoEarnLess(@RequestParam int salary){
+        Set<Employee> employeeSet = employeeService.searchWhoEarnLess(salary);
+        if (employeeSet.isEmpty()){
+            return "Никто не зарабатывает меньше " + salary;
+        }
+        return "Меньше " + salary + " зарабатывает: " +
+                employeeSet;
+    }
+    @GetMapping(path = "/whoearnmore", params = {"salary"})
+    public String whoEarnMore(@RequestParam int salary){
+        Set<Employee> employeeSet = employeeService.searchWhoEarnLess(salary);
+        if (employeeSet.isEmpty()){
+            return "Никто не зарабатывает больше " + salary;
+        }
+        return "Больше " + salary + " зарабатывает: " +
+                employeeSet;
     }
 
 

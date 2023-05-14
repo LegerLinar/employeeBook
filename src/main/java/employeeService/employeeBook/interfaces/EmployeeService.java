@@ -43,7 +43,7 @@ public interface EmployeeService {
     void toIndexSalary(int percent);
     Collection<Employee> printAllEmployeesData();
     Set<String> showEmployeesNames();
-    void printWhoEarnLess(int salary);
+    Set<Employee> searchWhoEarnLess(int salary);
     void printWhoEarnMore(int salary);
 
 
