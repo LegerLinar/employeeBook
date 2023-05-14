@@ -93,7 +93,7 @@ public class EmployeeController {
 
     }
 
-    @GetMapping(path ="/add")
+    @GetMapping(path = "/add")
     public String addNewEmployee(@RequestParam("surname") String surname,
                                  @RequestParam("name") String name,
                                  @RequestParam("patronymic") String patronymic,
@@ -106,5 +106,16 @@ public class EmployeeController {
                 department,
                 salary);
         return "Новый сотрудник успешно добавлен";
+    }
+
+    @GetMapping(path = "/remove")
+    public String removeEmployee(@RequestParam("surname") String surname,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("patronymic") String patronymic) {
+        employeeService.dismissEmployee(surname,
+                name,
+                patronymic);
+
+        return "Сотрудник удален";
     }
 }

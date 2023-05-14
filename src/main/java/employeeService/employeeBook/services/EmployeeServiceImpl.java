@@ -120,7 +120,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String patronymic,
                                    String department,
                                    int salary) {
-       return employeeMap.put(surname + " "
+        return employeeMap.put(surname + " "
                         + name + " "
                         + patronymic,
                 new Employee(surname,
@@ -132,12 +132,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void dismissEmployee(String surname, String name, String patronymic) {
-        if (employeeMap.remove(surname + " " + name + " " + patronymic) == null) {
-            System.out.println("Сотрудник не найден");
-        } else {
-            System.out.println("Сотрудник уволен");
-        }
+    public void dismissEmployee(String surname,
+                                String name,
+                                String patronymic) {
+        employeeMap.remove(surname
+                + " "
+                + name
+                + " "
+                + patronymic);
+
     }
 
     @Override
