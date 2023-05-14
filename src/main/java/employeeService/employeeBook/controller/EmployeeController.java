@@ -74,5 +74,9 @@ public class EmployeeController {
                                  @RequestParam("patron") String patron){
         return "" + employeeService.searchEmployee(surname, name, patron);
     }
+    @GetMapping(path="/search")
+    public String searchEmployeeById(@RequestParam("id") int id){
+        return "" + employeeService.searchEmployee(id);
+    }
 
 }

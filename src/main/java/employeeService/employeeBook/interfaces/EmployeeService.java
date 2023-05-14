@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface EmployeeService {
-    public Employee searchEmployee(String surname,
+    Employee searchEmployee(String surname,
                                    String name,
                                    String patronymic);
+    Employee searchEmployee(int id);
     void addNewEmployee(String surname,
                         String name,
                         String patronymic,
@@ -21,7 +22,6 @@ public interface EmployeeService {
     void dismissEmployee(int id);
 
 
-    Employee searchEmployee(int id);
 
     int countMonthSalaryExpenses();
     Employee findEmployeeMinSalary();
