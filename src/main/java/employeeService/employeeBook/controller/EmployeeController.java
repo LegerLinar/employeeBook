@@ -68,5 +68,11 @@ public class EmployeeController {
                 employeeSet;
     }
 
+    @GetMapping(path = "/search")
+    public String searchEmployee(@RequestParam String surname,
+                                 @RequestParam String name,
+                                 @RequestParam String patronymic){
+        return searchEmployee(surname, name, surname);
+    }
 
 }
