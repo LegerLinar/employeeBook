@@ -115,9 +115,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addNewEmployee(String surname, String name, String patronymic, String department, int salary) {
-        employeeMap.put(surname + " " + name + " " + patronymic, new Employee(surname, name, patronymic, department, salary));
-        System.out.println("Добавлен");
+    public Employee addNewEmployee(String surname,
+                                   String name,
+                                   String patronymic,
+                                   String department,
+                                   int salary) {
+       return employeeMap.put(surname + " "
+                        + name + " "
+                        + patronymic,
+                new Employee(surname,
+                        name,
+                        patronymic,
+                        department,
+                        salary));
+//        System.out.println("Добавлен");
     }
 
     @Override

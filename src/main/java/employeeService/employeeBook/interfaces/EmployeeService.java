@@ -10,11 +10,11 @@ public interface EmployeeService {
                                    String name,
                                    String patronymic);
     Employee searchEmployee(int id);
-    void addNewEmployee(String surname,
-                        String name,
-                        String patronymic,
-                        String department,
-                        int salary);
+    Employee addNewEmployee(String surname,
+                            String name,
+                            String patronymic,
+                            String department,
+                            int salary);
     void dismissEmployee(String surname,
                          String name,
                          String patronymic);

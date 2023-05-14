@@ -87,9 +87,27 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/indexsalary")
-    public String toIndexSalary(@RequestParam("index")int index){
+    public String toIndexSalary(@RequestParam("index") int index) {
         employeeService.toIndexSalary(index);
         return "Зарплата всех сотрудников увеличена на " + index;
 
+    }
+
+    @GetMapping(path ="/add")
+    public String addNewEmployee(@RequestParam("surname") String surname,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("patronymic") String patronymic,
+                                 @RequestParam("department") String department,
+                                 @RequestParam("salary") int salary) {
+        final Employee added = employeeService.addNewEmployee(
+                surname,
+                name,
+                patronymic,
+                department,
+                salary);
+        if(added == null){
+            throw new RuntimeException("Не удалось добавить сотрундика");
+        }
+        return "Новый сотрудник успешно добавлен";
     }
 }
