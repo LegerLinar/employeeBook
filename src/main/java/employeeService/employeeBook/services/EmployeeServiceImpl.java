@@ -3,9 +3,11 @@ package employeeService.employeeBook.services;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Service
 public class EmployeeServiceImpl implements EmployeeService{
     private Map<String, Employee> employeeMap = (Map<String, Employee>) new EmployeeBook();
 
