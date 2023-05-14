@@ -23,7 +23,7 @@ public interface EmployeeService {
     Employee searchEmployee(int id);
 
     int countMonthSalaryExpenses();
-    String findEmployeeMinSalary();
+    Employee findEmployeeMinSalary();
     String findEmployeeMaxSalary();
     int countAverageMonthSalary();
 

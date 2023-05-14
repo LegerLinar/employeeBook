@@ -9,9 +9,9 @@ import java.util.*;
 
 @Service
 public class DepartmentsServiceImpl implements DepartmentsService {
-    private EmployeeBook employeeBook =  new EmployeeBook();
+    private final EmployeeBook employeeBook =  new EmployeeBook();
     Map<String, Employee> employeeMap = employeeBook.employeeBook();
-    private EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
+//    private EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 
     public DepartmentsServiceImpl() {
     }

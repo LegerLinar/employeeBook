@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -33,16 +32,17 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public String findEmployeeMinSalary() {
-        int minSalary = 0;
-        String employeeWithMinSalary = "";
-        for (Employee employee : employeeMap.values()) {
-            if (employee.getSalary() < minSalary || minSalary == 0) {
-                minSalary = employee.getSalary();
-                employeeWithMinSalary = employee.toString();
-            }
-        }
-        return employeeWithMinSalary;
+    public Employee findEmployeeMinSalary() {
+
+        final int employeeWithMinSalary =
+        employeeMap.values().stream().
+                map(e -> e.getSalary()).
+                min(Comparator.naturalOrder()).
+                get();
+        return  employeeMap.values().stream().
+                filter(e -> e.getSalary() == employeeWithMinSalary).
+                findFirst().get();
+
 
     }
     @Override

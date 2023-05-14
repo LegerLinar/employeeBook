@@ -27,4 +27,8 @@ public class EmployeeController {
     public int countMonthSalaryExpenses(){
         return employeeService.countMonthSalaryExpenses();
     }
+    @GetMapping(path = "/minsalary")
+    public String findEmployeeWithMinSalary(){
+        return employeeService.findEmployeeMinSalary().toString();
+    }
 }

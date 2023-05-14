@@ -23,6 +23,7 @@ public class Employee {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
+        this.department  = department;
         this.salary = salary;
         id = idCounter++;
     }
