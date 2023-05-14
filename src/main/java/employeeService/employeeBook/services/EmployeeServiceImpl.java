@@ -6,20 +6,21 @@ import employeeService.employeeBook.interfaces.EmployeeService;
 
 import java.util.Map;
 
-public class EmployeeServiceImpl {
+public class EmployeeServiceImpl implements EmployeeService{
     private Map<String, Employee> employeeMap = (Map<String, Employee>) new EmployeeBook();
 
     public EmployeeServiceImpl() {
 
     }
 
+    @Override
     public void printAllEmployeesData() {
         System.out.println("Личный состав:");
         for (Employee employee : employeeMap.values()) {
             System.out.println(employee);
         }
     }
-
+    @Override
     public int countMonthSalaryExpenses() {
         int monthSalaryExpenses = 0;
         for (Employee employee :
@@ -29,6 +30,7 @@ public class EmployeeServiceImpl {
         return monthSalaryExpenses;
     }
 
+    @Override
     public String findEmployeeMinSalary() {
         int minSalary = 0;
         String employeeWithMinSalary = "";
@@ -41,7 +43,7 @@ public class EmployeeServiceImpl {
         return employeeWithMinSalary;
 
     }
-
+    @Override
     public String findEmployeeMaxSalary() {
         int maxSalary = 0;
         String employeeWithMaxSalary = "";
@@ -53,7 +55,7 @@ public class EmployeeServiceImpl {
         }
         return employeeWithMaxSalary;
     }
-
+    @Override
     public int countAverageMonthSalary() {
         int totalMonthSalary = 0;
         int employeesCounter = 0;
@@ -64,6 +66,7 @@ public class EmployeeServiceImpl {
         return totalMonthSalary / employeesCounter;
     }
 
+    @Override
     public void showEmployeesNames() {
         StringBuilder employeesString = new StringBuilder();
         for (String employee : employeeMap.keySet()) {
@@ -71,6 +74,7 @@ public class EmployeeServiceImpl {
         }
     }
 
+    @Override
     public void printWhoEarnLess(int salary) {
         System.out.println("Сотрудники зарабатывающие менее " + salary + " руб.");
         int existCounter = 0;
@@ -85,6 +89,7 @@ public class EmployeeServiceImpl {
         }
     }
 
+    @Override
     public void printWhoEarnMore(int salary) {
         System.out.println("Сотрудники зарабатывающие более " + salary + " руб.");
         int existCounter = 0;
@@ -99,11 +104,15 @@ public class EmployeeServiceImpl {
         }
     }
 
-    public Employee searchEmployee(String surname, String name, String patronymic) {
+    @Override
+    public Employee searchEmployee(String surname,
+                                   String name,
+                                   String patronymic) {
         return employeeMap.get(surname + " " + name + " " + patronymic);
 
     }
 
+    @Override
     public Employee searchEmployee(int id) {
         for (Employee employee : employeeMap.values()) {
             if (employee.getId() == id) {
@@ -113,6 +122,7 @@ public class EmployeeServiceImpl {
         return null;
     }
 
+    @Override
     public void toIndexSalary(int percent) {
         int increaseAmount;
         for (Employee employee : employeeMap.values()) {
@@ -121,11 +131,13 @@ public class EmployeeServiceImpl {
         }
     }
 
+    @Override
     public void addNewEmployee(String surname, String name, String patronymic, String department, int salary) {
         employeeMap.put(surname + " " + name + " " + patronymic, new Employee(surname, name, patronymic, department, salary));
         System.out.println("Добавлен");
     }
 
+    @Override
     public void dismissEmployee(String surname, String name, String patronymic) {
         if (employeeMap.remove(surname + " " + name + " " + patronymic) == null) {
             System.out.println("Сотрудник не найден");
@@ -134,6 +146,7 @@ public class EmployeeServiceImpl {
         }
     }
 
+    @Override
     public void dismissEmployee(int id) {
 
         if (searchEmployee(id) != null) {
@@ -144,7 +157,11 @@ public class EmployeeServiceImpl {
         }
     }
 
-    public void changeEmployeesSalary(String surname, String name, String patronymic, int changeSalary) {
+    @Override
+    public void changeEmployeesSalary(String surname,
+                                      String name,
+        String patronymic,
+                                      int changeSalary) {
 
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
@@ -155,6 +172,7 @@ public class EmployeeServiceImpl {
         }
     }
 
+    @Override
     public void changeEmployeesSalary(int id, int changeSalary) {
 
         Employee employee = searchEmployee(id);
@@ -166,7 +184,11 @@ public class EmployeeServiceImpl {
         }
     }
 
-    public void changeEmployeeDepartment(String surname, String name, String patronymic, String department) {
+    @Override
+    public void changeEmployeeDepartment(String surname,
+                                         String name,
+                                         String patronymic,
+                                         String department) {
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
             employee.setDepartment(department);
@@ -176,7 +198,7 @@ public class EmployeeServiceImpl {
         }
     }
 
-    //
+    @Override
     public void changeEmployeeDepartment(int id, String department) {
         Employee employee = searchEmployee(id);
         if (employee != null) {
@@ -190,6 +212,3 @@ public class EmployeeServiceImpl {
 
 //    --------------------------- CLASS END -------------------------
 }
-/*
-
- */
