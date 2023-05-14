@@ -1,6 +1,6 @@
 package employeeService.employeeBook.interfaces;
 
-import employeeService.employeeBook.services.EmployeeServiceImpl;
+import employeeService.employeeBook.employeeBook.Employee;
 
 import java.util.Map;
 
@@ -9,6 +9,6 @@ public interface DepartmentsService {
     void find(String initials);
     void remove(String initials);
 
-    Map<String, EmployeeServiceImpl> getEmployees();
+    Map<String, Employee> getEmployees();
 
 }

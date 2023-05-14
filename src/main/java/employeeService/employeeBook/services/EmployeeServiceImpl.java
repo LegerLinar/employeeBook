@@ -1,114 +1,195 @@
 package employeeService.employeeBook.services;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import employeeService.employeeBook.employeeBook.Employee;
+import employeeService.employeeBook.employeeBook.EmployeeBook;
+import employeeService.employeeBook.interfaces.EmployeeService;
+
+import java.util.Map;
 
 public class EmployeeServiceImpl {
-    private String surname;
-    private String name;
-    private String patronymic;
-    private String department;
-    private int salary;
-    private int id;
+    private Map<String, Employee> employeeMap = (Map<String, Employee>) new EmployeeBook();
 
-    private static int idCounter = 1;
+    public EmployeeServiceImpl() {
 
-    protected static final Set<String> departments = new HashSet<>(Set.of("1", "2", "3", "4", "5"));
+    }
 
-
-
-    public EmployeeServiceImpl(String surname, String name, String patronymic, String department, int salary) {
-
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        if (isDepartmentExist(department)) {
-            this.department = department;
-        } else {
-            throw new IllegalArgumentException("Такого отдела не существует");
+    public void printAllEmployeesData() {
+        System.out.println("Личный состав:");
+        for (Employee employee : employeeMap.values()) {
+            System.out.println(employee);
         }
-        this.salary = salary;
-        id = idCounter++;
     }
 
-    // ------------------ own utily methods ---------------------
-
-    public boolean isDepartmentExist(String department) {
-        return departments.contains(department);
+    public int countMonthSalaryExpenses() {
+        int monthSalaryExpenses = 0;
+        for (Employee employee :
+                employeeMap.values()) {
+            monthSalaryExpenses += employee.getSalary();
+        }
+        return monthSalaryExpenses;
     }
 
-    public String getEmployeeInitials() {
-        return surname + " " + name + " " + patronymic;
-    }
-
-
-    //   ---------------------- setters-getters area -----------------------
-    public String getSurname() {
-        return surname;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Set<String> getDepartments() {
-        return departments;
-    }
-
-//    Setters
-
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    public void setDepartment(String department) {
-        for (String departmentName : departments) {
-            if (departmentName.equals(department)) {
-                this.department = department;
+    public String findEmployeeMinSalary() {
+        int minSalary = 0;
+        String employeeWithMinSalary = "";
+        for (Employee employee : employeeMap.values()) {
+            if (employee.getSalary() < minSalary || minSalary == 0) {
+                minSalary = employee.getSalary();
+                employeeWithMinSalary = employee.toString();
             }
         }
+        return employeeWithMinSalary;
+
     }
 
-    @Override
-    public String toString() {
-        return "Сотрудник - " + surname + " " + name + " " + patronymic + ". Отдел - " + department + ". Зарплата в мес. - " + salary + "руб. (id: " + id + ")";
+    public String findEmployeeMaxSalary() {
+        int maxSalary = 0;
+        String employeeWithMaxSalary = "";
+        for (Employee employee : employeeMap.values()) {
+            if (employee.getSalary() > maxSalary) {
+                maxSalary = employee.getSalary();
+                employeeWithMaxSalary = employee.toString();
+            }
+        }
+        return employeeWithMaxSalary;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeServiceImpl employeeServiceImpl = (EmployeeServiceImpl) o;
-        return id == employeeServiceImpl.id && surname.equals(employeeServiceImpl.surname) && name.equals(employeeServiceImpl.name) && patronymic.equals(employeeServiceImpl.patronymic);
+    public int countAverageMonthSalary() {
+        int totalMonthSalary = 0;
+        int employeesCounter = 0;
+        for (Employee employee : employeeMap.values()) {
+            totalMonthSalary += employee.getSalary();
+            employeesCounter++;
+        }
+        return totalMonthSalary / employeesCounter;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(surname, name, patronymic);
+    public void showEmployeesNames() {
+        StringBuilder employeesString = new StringBuilder();
+        for (String employee : employeeMap.keySet()) {
+            System.out.println(employee);
+        }
     }
 
-    //    ------------------------------------- class end -------------------------------------
+    public void printWhoEarnLess(int salary) {
+        System.out.println("Сотрудники зарабатывающие менее " + salary + " руб.");
+        int existCounter = 0;
+        for (Employee employee : employeeMap.values()) {
+            if (employee.getSalary() < salary) {
+                existCounter = employee.getSalary();
+                System.out.println(employee);
+            }
+        }
+        if (existCounter == 0) {
+            System.out.println("Сотрудников с зарплатой ниже " + salary + "руб. нет");
+        }
+    }
 
+    public void printWhoEarnMore(int salary) {
+        System.out.println("Сотрудники зарабатывающие более " + salary + " руб.");
+        int existCounter = 0;
+        for (Employee employee : employeeMap.values()) {
+            if (employee.getSalary() >= salary) {
+                existCounter = employee.getSalary();
+                System.out.println(employee);
+            }
+        }
+        if (existCounter == 0) {
+            System.out.println("Сотрудников с зарплатой выше или равной " + salary + "руб. нет");
+        }
+    }
+
+    public Employee searchEmployee(String surname, String name, String patronymic) {
+        return employeeMap.get(surname + " " + name + " " + patronymic);
+
+    }
+
+    public Employee searchEmployee(int id) {
+        for (Employee employee : employeeMap.values()) {
+            if (employee.getId() == id) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
+    public void toIndexSalary(int percent) {
+        int increaseAmount;
+        for (Employee employee : employeeMap.values()) {
+            increaseAmount = employee.getSalary() * percent / 100;
+            employee.setSalary(employee.getSalary() + increaseAmount);
+        }
+    }
+
+    public void addNewEmployee(String surname, String name, String patronymic, String department, int salary) {
+        employeeMap.put(surname + " " + name + " " + patronymic, new Employee(surname, name, patronymic, department, salary));
+        System.out.println("Добавлен");
+    }
+
+    public void dismissEmployee(String surname, String name, String patronymic) {
+        if (employeeMap.remove(surname + " " + name + " " + patronymic) == null) {
+            System.out.println("Сотрудник не найден");
+        } else {
+            System.out.println("Сотрудник уволен");
+        }
+    }
+
+    public void dismissEmployee(int id) {
+
+        if (searchEmployee(id) != null) {
+            employeeMap.remove(searchEmployee(id).getEmployeeInitials());
+            System.out.println("Сотрудник уволен");
+        } else {
+            System.out.println("Сотрудник не найден");
+        }
+    }
+
+    public void changeEmployeesSalary(String surname, String name, String patronymic, int changeSalary) {
+
+        Employee employee = searchEmployee(surname, name, patronymic);
+        if (employee != null) {
+            employee.setSalary(employee.getSalary() + changeSalary);
+            System.out.println("Зарплата сотрудника " + employee.getEmployeeInitials() + " (id: " + employee.getId() + ") изменена");
+        } else {
+            System.out.println("Сотрудник не найден");
+        }
+    }
+
+    public void changeEmployeesSalary(int id, int changeSalary) {
+
+        Employee employee = searchEmployee(id);
+        if (employee != null) {
+            employee.setSalary(employee.getSalary() + changeSalary);
+            System.out.println("Зарплата сотрудника " + employee.getEmployeeInitials() + " (id: " + employee.getId() + ") изменена");
+        } else {
+            System.out.println("Сотрудник не найден");
+        }
+    }
+
+    public void changeEmployeeDepartment(String surname, String name, String patronymic, String department) {
+        Employee employee = searchEmployee(surname, name, patronymic);
+        if (employee != null) {
+            employee.setDepartment(department);
+            System.out.println("Сотрудник " + employee.getEmployeeInitials() + " переведен в отдел " + employee.getDepartment());
+        } else {
+            System.out.println("Сотрудник не найден");
+        }
+    }
+
+    //
+    public void changeEmployeeDepartment(int id, String department) {
+        Employee employee = searchEmployee(id);
+        if (employee != null) {
+            employee.setDepartment(department);
+            System.out.println("Сотрудник " + employee.getEmployeeInitials() + " переведен в отдел " + employee.getDepartment());
+        } else {
+            System.out.println("Сотрудник не найден");
+        }
+    }
+
+
+//    --------------------------- CLASS END -------------------------
 }
+/*
+
+ */
