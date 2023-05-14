@@ -5,9 +5,8 @@ import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -19,11 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public List<String> printAllEmployeesData() {
-        return employeeMap.values().stream().
-                map(e -> e.getEmployeeInitials()).
-                map(e -> " " + e + " ").
-                collect(Collectors.toList());
+    public Set<String> printAllEmployeesData() {
+        return employeeMap.keySet();
     }
     @Override
     public int countMonthSalaryExpenses() {
@@ -33,6 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService{
             monthSalaryExpenses += employee.getSalary();
         }
         return monthSalaryExpenses;
+
+//        employeeMap.values()
     }
 
     @Override
