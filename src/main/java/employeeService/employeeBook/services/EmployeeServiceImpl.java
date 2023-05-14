@@ -1,10 +1,10 @@
-package employeeService.employeeBook.controller;
+package employeeService.employeeBook.services;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Employee {
+public class EmployeeServiceImpl {
     private String surname;
     private String name;
     private String patronymic;
@@ -14,11 +14,11 @@ public class Employee {
 
     private static int idCounter = 1;
 
-    static final Set<String> departments = new HashSet<>(Set.of("1", "2", "3", "4", "5"));
+    protected static final Set<String> departments = new HashSet<>(Set.of("1", "2", "3", "4", "5"));
 
 
 
-    public Employee(String surname, String name, String patronymic, String department, int salary) {
+    public EmployeeServiceImpl(String surname, String name, String patronymic, String department, int salary) {
 
         this.surname = surname;
         this.name = name;
@@ -100,8 +100,8 @@ public class Employee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return id == employee.id && surname.equals(employee.surname) && name.equals(employee.name) && patronymic.equals(employee.patronymic);
+        EmployeeServiceImpl employeeServiceImpl = (EmployeeServiceImpl) o;
+        return id == employeeServiceImpl.id && surname.equals(employeeServiceImpl.surname) && name.equals(employeeServiceImpl.name) && patronymic.equals(employeeServiceImpl.patronymic);
     }
 
     @Override
