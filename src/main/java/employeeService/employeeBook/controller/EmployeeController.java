@@ -69,10 +69,10 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/search")
-    public String searchEmployee(@RequestParam String surname,
-                                 @RequestParam String name,
-                                 @RequestParam String patronymic){
-        return searchEmployee(surname, name, surname);
+    public String searchEmployee(@RequestParam("surname") String surname,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("patron") String patron){
+        return "" + employeeService.searchEmployee(surname, name, patron);
     }
 
 }

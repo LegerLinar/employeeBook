@@ -93,12 +93,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Employee searchEmployee(int id) {
-        for (Employee employee : employeeMap.values()) {
-            if (employee.getId() == id) {
-                return employee;
-            }
-        }
-        return null;
+
+       return employeeMap.values().stream().
+                filter(e -> e.getId() == id).
+                findFirst().
+                get();
     }
 
     @Override
