@@ -5,7 +5,9 @@ import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,14 +25,11 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
     @Override
     public int countMonthSalaryExpenses() {
-        int monthSalaryExpenses = 0;
-        for (Employee employee :
-                employeeMap.values()) {
-            monthSalaryExpenses += employee.getSalary();
-        }
-        return monthSalaryExpenses;
-
-//        employeeMap.values()
+        int max = employeeMap.values().stream().
+                map(e -> e.getSalary()).
+                mapToInt(Integer::intValue).
+                sum();
+        return max;
     }
 
     @Override

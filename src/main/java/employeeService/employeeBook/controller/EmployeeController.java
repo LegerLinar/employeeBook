@@ -23,7 +23,8 @@ public class EmployeeController {
     public String printAllEmployeesData(){
         return employeeService.printAllEmployeesData().toString();
     }
-
-
-
+    @GetMapping(path = "/totalmonthsalary")
+    public int countMonthSalaryExpenses(){
+        return employeeService.countMonthSalaryExpenses();
+    }
 }
