@@ -5,22 +5,25 @@ import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
-    private Map<String, Employee> employeeMap = (Map<String, Employee>) new EmployeeBook();
+    private EmployeeBook employeeBook = new EmployeeBook();
+    private Map<String, Employee> employeeMap = employeeBook.employeeBook();
 
     public EmployeeServiceImpl() {
 
     }
 
     @Override
-    public void printAllEmployeesData() {
-        System.out.println("Личный состав:");
-        for (Employee employee : employeeMap.values()) {
-            System.out.println(employee);
-        }
+    public List<String> printAllEmployeesData() {
+        return employeeMap.values().stream().
+                map(e -> e.getEmployeeInitials()).
+                map(e -> " " + e + " ").
+                collect(Collectors.toList());
     }
     @Override
     public int countMonthSalaryExpenses() {

@@ -21,4 +21,8 @@ public class EmployeeBook {
                 new Employee("Хирохито", "Сёма", "Ёсихитович", "4", 100_000)
         ));
     }
+
+    public Map<String, Employee> employeeBook(){
+        return employeeMap;
+    }
 }
