@@ -6,12 +6,14 @@ import employeeService.employeeBook.model.EmployeeBook;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparingInt;
 
 @Service
 public class DepartmentsServiceImpl implements DepartmentsService {
-    private final EmployeeBook employeeBook =  new EmployeeBook();
+    private final EmployeeBook employeeBook = new EmployeeBook();
     Map<String, Employee> employeeMap = employeeBook.employeeBook();
-//    private EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 
     public DepartmentsServiceImpl() {
     }
@@ -25,35 +27,18 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
 
     public List<Employee> getEmployeesByDep(String department) {
-        int subEmployeesCounter = 0;
-        List<Employee> subEmployeeListServiceImpl = new ArrayList<>(0);
-        for (Employee employee : employeeMap.values()) {
-            if (employee.getDepartment().contentEquals(department)) {
-                subEmployeeListServiceImpl.add(employee);
-
-            }
-        }
-        if (subEmployeeListServiceImpl.isEmpty()) {
-            System.out.println("В отделе нет сотрудников");
-        }
-        return subEmployeeListServiceImpl;
+        return employeeMap.values().stream().
+                filter(e -> e.getDepartment().contentEquals(department)).
+                collect(Collectors.toList());
     }
 
 
-    public void findEmployeesMinSalaryByDep(String department) {
-        int minSalary = 0;
-        String employeeName = "";
-        for (Employee employee : getEmployeesByDep(department)) {
-            if (employee.getSalary() < minSalary || minSalary == 0) {
-                minSalary = employee.getSalary();
-                employeeName = employee.getEmployeeInitials();
-            }
-        }
-        if (employeeName.equals("")) {
-            System.out.println("В указанном отделе нет сотрудников");
-        } else {
-            System.out.println("Сотрудник " + employeeName + " получает наименьшую зарплату в отделе " + department + " - " + minSalary + "руб.");
-        }
+    public Employee findEmployeesMinSalaryByDep(String department) {
+
+        return employeeMap.values().stream()
+                .filter(e -> e.getDepartment().contentEquals(department))
+                .min(comparingInt(Employee::getSalary))
+                .orElseThrow(RuntimeException::new);
     }
 
     public void findEmployeesMaxSalaryOfDep(String department) {
@@ -74,13 +59,12 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
     }
 
-    public void countSummarySalaryOfDep(String department) {
-        int summarySalary = 0;
-        for (Employee employee : getEmployeesByDep(department)) {
-
-            summarySalary += employee.getSalary();
-        }
-        System.out.println("Сумма затрат на заработную плату отделу " + department + " в месяц, составляет - " + summarySalary + "руб.");
+    public int countSummarySalaryOfDep(String department) {
+        return employeeMap.values().stream().
+                filter(e -> e.getDepartment().contentEquals(department))
+                .map(e -> e.getSalary())
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
 
