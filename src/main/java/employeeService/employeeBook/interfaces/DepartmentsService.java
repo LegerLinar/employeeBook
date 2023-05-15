@@ -11,7 +11,7 @@ public interface DepartmentsService {
     int countSummarySalaryOfDep(String department);
     double countAverageSalaryOfDep(String department);
     void toIndexSalaryOfDep(String department, int percent);
-    void printDepartment(String department);
+    List<Employee> printDepartment(String department);
     void printAllDepartmentPersonnel();
 
 }

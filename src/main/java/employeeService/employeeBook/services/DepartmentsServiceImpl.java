@@ -77,6 +77,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
     }
 
+    //вроде не требуется
     public void toIndexSalaryOfDep(String department, int percent) {
         int increaseAmount;
         for (Employee employee : getEmployeesByDep(department)) {
@@ -88,15 +89,12 @@ public class DepartmentsServiceImpl implements DepartmentsService {
         }
     }
 
-    public void printDepartment(String department) {
-        System.out.println("Сотрудники отдела " + department);
-        for (Employee employee : getEmployeesByDep(department)) {
-            if (employee == null) {
-                System.out.println("В отделе нет сотрудников");
-            }
+    public List<Employee> printDepartment(String department) {
 
-            System.out.println(employee.getEmployeeInitials() + ", заработная плата - " + employee.getSalary() + "руб. id - " + employee.getId());
-        }
+
+        return employeeMap.values().stream()
+                .filter(e -> e.getDepartment().contentEquals(department))
+                .collect(Collectors.toList());
     }
 
 

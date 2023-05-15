@@ -47,6 +47,12 @@ public class DepartmentsController {
                 + "руб.";
     }
 
+    @GetMapping(path = "/print")
+    public String printDepartment(
+            @RequestParam("department") String department){
+        return "Сотрудники отдела " + department
+                + " : " + departmentsService.printDepartment(department);
+    }
 
 
 }
