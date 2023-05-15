@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 
 @Service
@@ -38,7 +39,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
         return employeeMap.values().stream()
                 .filter(e -> e.getDepartment().contentEquals(department))
                 .min(comparingInt(Employee::getSalary))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow();
     }
 
     public void findEmployeesMaxSalaryOfDep(String department) {
@@ -98,19 +99,11 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     }
 
 
-    public void printAllDepartmentPersonnel() {
+    public Map<String, List<Employee>> printAllDepartmentPersonnel() {
+        return  employeeMap.values().stream()
+                .sorted(comparing(Employee:: getSurname))
+                .collect(Collectors.groupingBy(Employee::getDepartment));
 
-        for (String actualDepartment : Employee.getDepartments()) {
-            System.out.println("Отдел " + actualDepartment + ":");
-            for (Employee employee : getEmployeesByDep(actualDepartment)) {
-                if (employee == null) {
-                    System.out.println("В отделе нет сотрудников");
-                }
-
-                System.out.println(employee.getEmployeeInitials() + ", id: " + employee.getId());
-
-            }
-        }
     }
 //    Class End ––––––––––––––––––––––––
 }

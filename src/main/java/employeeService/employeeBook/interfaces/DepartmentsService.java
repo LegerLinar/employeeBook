@@ -3,6 +3,7 @@ package employeeService.employeeBook.interfaces;
 import employeeService.employeeBook.model.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DepartmentsService {
     List<Employee> getEmployeesByDep(String department);
@@ -12,6 +13,6 @@ public interface DepartmentsService {
     double countAverageSalaryOfDep(String department);
     void toIndexSalaryOfDep(String department, int percent);
     List<Employee> printDepartment(String department);
-    void printAllDepartmentPersonnel();
+    Map<String, List<Employee>> printAllDepartmentPersonnel();
 
 }
