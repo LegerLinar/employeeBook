@@ -68,15 +68,13 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     }
 
 
-    public void countAverageSalaryOfDep(String department) {
-        int summarySalary = 0;
-        int employeesCounter = 0;
-        for (Employee employee : getEmployeesByDep(department)) {
-            summarySalary += employee.getSalary();
-            employeesCounter++;
-        }
-        int averageSummarySalary = summarySalary / employeesCounter;
-        System.out.println("Средняя заработная плата за месяц в отделе " + department + " составляет - " + averageSummarySalary + "руб.");
+    public double countAverageSalaryOfDep(String department) {
+       return employeeMap.values().stream()
+                .filter(e -> e.getDepartment().contentEquals(department))
+                .map(e -> e.getSalary())
+                .mapToDouble(Integer::doubleValue)
+                .average().getAsDouble();
+
     }
 
     public void toIndexSalaryOfDep(String department, int percent) {

@@ -14,27 +14,39 @@ import java.util.List;
 @RequestMapping("/department")
 public class DepartmentsController {
     private final DepartmentsService departmentsService;
-    public DepartmentsController(DepartmentsService departmentsService){
+
+    public DepartmentsController(DepartmentsService departmentsService) {
         this.departmentsService = new DepartmentsServiceImpl();
     }
 
     @GetMapping(path = "/staffofdepartment")
     public String getEmployeesByDep(
-            @RequestParam("department") String department){
+            @RequestParam("department") String department) {
         return "" + departmentsService.getEmployeesByDep(department);
     }
 
     @GetMapping(path = "/depminsalary")
     public String findEmployeesMinSalaryByDep(
-            @RequestParam("department") String department){
+            @RequestParam("department") String department) {
         return "" + departmentsService.findEmployeesMinSalaryByDep(department);
     }
 
     @GetMapping(path = "/departmentsalary")
     public String countSummarySalaryOfDep(
-            @RequestParam("department") String department){
+            @RequestParam("department") String department) {
         return "Суммарная заработная плата отдела " + department +
                 " : " + departmentsService.countSummarySalaryOfDep(department)
                 + "руб.";
     }
+
+    @GetMapping(path = "/averagesalary")
+    public String countAverageSalary(
+            @RequestParam("department") String department){
+        return "Средняя заработная плата в отделе " + department +
+                " : " + departmentsService.countAverageSalaryOfDep(department)
+                + "руб.";
+    }
+
+
+
 }
