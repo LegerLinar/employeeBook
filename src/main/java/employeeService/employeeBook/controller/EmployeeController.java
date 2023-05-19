@@ -3,6 +3,7 @@ package employeeService.employeeBook.controller;
 
 import employeeService.employeeBook.interfaces.EmployeeService;
 import employeeService.employeeBook.model.Employee;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -99,13 +100,14 @@ public class EmployeeController {
                                  @RequestParam("patronymic") String patronymic,
                                  @RequestParam("department") String department,
                                  @RequestParam("salary") int salary) {
+
         employeeService.addNewEmployee(
                 surname,
                 name,
                 patronymic,
                 department,
                 salary);
-        return "Новый сотрудник успешно добавлен";
+        return "Новый сотрудник успешно добавлен" + StringUtils.isAlpha(surname);
     }
 
     @GetMapping(path = "/remove")
