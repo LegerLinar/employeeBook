@@ -94,9 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee searchEmployee(String surname,
                                    String name,
                                    String patronymic) {
-        if (validateName(surname, name, patronymic)) {
-            throw new WrongNameException();
-        }
+        validateName(surname, name, patronymic);
         return employeeMap.get(surname + " " + name + " " + patronymic);
 
     }
@@ -128,9 +126,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String department,
                                    int salary) {
 
-        if (validateName(surname, name, patronymic)) {
-            throw new WrongNameException();
-        }
+        validateName(surname, name, patronymic);
+
         surname = lowerCase(surname);
         name = lowerCase(name);
         patronymic = lowerCase(patronymic);
@@ -155,9 +152,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void dismissEmployee(String surname,
                                 String name,
                                 String patronymic) {
-        if (validateName(surname, name, patronymic)) {
-            throw new WrongNameException();
-        }
+        validateName(surname, name, patronymic);
+
         employeeMap.remove(surname
                 + " "
                 + name
@@ -185,9 +181,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                       String name,
                                       String patronymic,
                                       int changeSalary) {
-        if (validateName(surname, name, patronymic)) {
-            throw new WrongNameException();
-        }
+        validateName(surname, name, patronymic);
 
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
@@ -215,9 +209,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                                          String name,
                                          String patronymic,
                                          String department) {
-        if (validateName(surname, name, patronymic)) {
-            throw new WrongNameException();
-        }
+        validateName(surname, name, patronymic);
+
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
             employee.setDepartment(department);
@@ -238,10 +231,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public boolean validateName(String surname, String name, String patronymic){
-        return  isAlpha(surname)
+    public void validateName(String surname, String name, String patronymic){
+        if (!isAlpha(surname)
                 && !isAlpha(name)
-                && !isAlpha(patronymic);
+                && !isAlpha(patronymic)){
+            throw new WrongNameException();
+        }
 
 
     }
