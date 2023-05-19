@@ -107,7 +107,7 @@ public class EmployeeController {
                 patronymic,
                 department,
                 salary);
-        return "Новый сотрудник успешно добавлен" + StringUtils.isAlpha(surname);
+        return "Новый сотрудник успешно добавлен";
     }
 
     @GetMapping(path = "/remove")
