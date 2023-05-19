@@ -101,12 +101,6 @@ public class EmployeeController {
                                  @RequestParam("patronymic") String patronymic,
                                  @RequestParam("department") String department,
                                  @RequestParam("salary") int salary) {
-        if(!StringUtils.isAlpha(surname)
-        || !StringUtils.isAlpha(name)
-        || !StringUtils.isAlpha(patronymic)){
-            throw new WrongNameException();
-        }
-
         employeeService.addNewEmployee(
                 surname,
                 name,

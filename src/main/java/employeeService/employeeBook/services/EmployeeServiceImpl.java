@@ -1,8 +1,10 @@
 package employeeService.employeeBook.services;
 
+import employeeService.employeeBook.exceptions.WrongNameException;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -120,6 +122,21 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String patronymic,
                                    String department,
                                    int salary) {
+
+        if (!StringUtils.isAlpha(surname)
+                || !StringUtils.isAlpha(name)
+                || !StringUtils.isAlpha(patronymic)) {
+            throw new WrongNameException();
+        }
+        surname = StringUtils.lowerCase(surname);
+        name = StringUtils.lowerCase(name);
+        patronymic = StringUtils.lowerCase(patronymic);
+
+        surname = StringUtils.capitalize(surname);
+        name = StringUtils.capitalize(name);
+        patronymic = StringUtils.capitalize(patronymic);
+
+
         return employeeMap.put(surname + " "
                         + name + " "
                         + patronymic,
@@ -155,7 +172,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-//  –––––––––––––––––––––––----- Till that point all in Controller --------------------
+    //  –––––––––––––––––––––––----- Till that point all in Controller --------------------
     @Override
     public void changeEmployeesSalary(String surname,
                                       String name,
