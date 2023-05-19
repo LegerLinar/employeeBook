@@ -1,4 +1,4 @@
-package employeeService.employeeBook.controller;
+package employeeService.employeeBook.model;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,20 +23,13 @@ public class Employee {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
-        if (isDepartmentExist(department)) {
-            this.department = department;
-        } else {
-            throw new IllegalArgumentException("Такого отдела не существует");
-        }
+        this.department  = department;
         this.salary = salary;
         id = idCounter++;
     }
 
     // ------------------ own utily methods ---------------------
 
-    public boolean isDepartmentExist(String department) {
-        return departments.contains(department);
-    }
 
     public String getEmployeeInitials() {
         return surname + " " + name + " " + patronymic;
@@ -72,7 +65,7 @@ public class Employee {
         return id;
     }
 
-    public Set<String> getDepartments() {
+    public static Set<String> getDepartments() {
         return departments;
     }
 
@@ -93,7 +86,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Сотрудник - " + surname + " " + name + " " + patronymic + ". Отдел - " + department + ". Зарплата в мес. - " + salary + "руб. (id: " + id + ")";
+        return surname + " " + name + " " + patronymic + ". Отдел - " + department + ". Зарплата в мес. - " + salary + "руб. (id: " + id + ")";
     }
 
     @Override
