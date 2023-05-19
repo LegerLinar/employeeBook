@@ -4,7 +4,6 @@ import employeeService.employeeBook.exceptions.WrongNameException;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,11 +27,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public int countMonthSalaryExpenses() {
-        int max = employeeMap.values().stream().
+         return employeeMap.values().stream().
                 map(e -> e.getSalary()).
                 mapToInt(Integer::intValue).
                 sum();
-        return max;
+
     }
 
     @Override
@@ -128,13 +127,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         validateName(surname, name, patronymic);
 
-        surname = lowerCase(surname);
-        name = lowerCase(name);
-        patronymic = lowerCase(patronymic);
+        surname = capitalize(lowerCase(surname));
+        name = capitalize(lowerCase(name));
+        patronymic = capitalize(lowerCase(patronymic));
 
-        surname = capitalize(surname);
-        name = capitalize(name);
-        patronymic = capitalize(patronymic);
 
 
         return employeeMap.put(surname + " "
