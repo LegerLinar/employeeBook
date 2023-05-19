@@ -92,6 +92,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee searchEmployee(String surname,
                                    String name,
                                    String patronymic) {
+        if (!StringUtils.isAlpha(surname)
+                || !StringUtils.isAlpha(name)
+                || !StringUtils.isAlpha(patronymic)) {
+            throw new WrongNameException();
+        }
         return employeeMap.get(surname + " " + name + " " + patronymic);
 
     }
@@ -152,6 +157,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void dismissEmployee(String surname,
                                 String name,
                                 String patronymic) {
+        if (!StringUtils.isAlpha(surname)
+                || !StringUtils.isAlpha(name)
+                || !StringUtils.isAlpha(patronymic)) {
+            throw new WrongNameException();
+        }
         employeeMap.remove(surname
                 + " "
                 + name
@@ -162,6 +172,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void dismissEmployee(int id) {
+
 
         if (searchEmployee(id) != null) {
             employeeMap.remove(searchEmployee(id).getEmployeeInitials());
@@ -178,6 +189,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                                       String name,
                                       String patronymic,
                                       int changeSalary) {
+        if (!StringUtils.isAlpha(surname)
+                || !StringUtils.isAlpha(name)
+                || !StringUtils.isAlpha(patronymic)) {
+            throw new WrongNameException();
+        }
 
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
@@ -205,6 +221,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                                          String name,
                                          String patronymic,
                                          String department) {
+        if (!StringUtils.isAlpha(surname)
+                || !StringUtils.isAlpha(name)
+                || !StringUtils.isAlpha(patronymic)) {
+            throw new WrongNameException();
+        }
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
             employee.setDepartment(department);
