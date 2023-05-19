@@ -1,6 +1,7 @@
 package employeeService.employeeBook.controller;
 
 
+import employeeService.employeeBook.exceptions.WrongNameException;
 import employeeService.employeeBook.interfaces.EmployeeService;
 import employeeService.employeeBook.model.Employee;
 import org.apache.commons.lang3.StringUtils;
@@ -100,6 +101,11 @@ public class EmployeeController {
                                  @RequestParam("patronymic") String patronymic,
                                  @RequestParam("department") String department,
                                  @RequestParam("salary") int salary) {
+        if(!StringUtils.isAlpha(surname)
+        || !StringUtils.isAlpha(name)
+        || !StringUtils.isAlpha(patronymic)){
+            throw new WrongNameException();
+        }
 
         employeeService.addNewEmployee(
                 surname,
