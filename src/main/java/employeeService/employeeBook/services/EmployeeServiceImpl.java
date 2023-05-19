@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeBook employeeBook = new EmployeeBook();
@@ -92,9 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee searchEmployee(String surname,
                                    String name,
                                    String patronymic) {
-        if (!StringUtils.isAlpha(surname)
-                || !StringUtils.isAlpha(name)
-                || !StringUtils.isAlpha(patronymic)) {
+        if (validateName(surname, name, patronymic)) {
             throw new WrongNameException();
         }
         return employeeMap.get(surname + " " + name + " " + patronymic);
@@ -128,18 +128,16 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String department,
                                    int salary) {
 
-        if (!StringUtils.isAlpha(surname)
-                || !StringUtils.isAlpha(name)
-                || !StringUtils.isAlpha(patronymic)) {
+        if (validateName(surname, name, patronymic)) {
             throw new WrongNameException();
         }
-        surname = StringUtils.lowerCase(surname);
-        name = StringUtils.lowerCase(name);
-        patronymic = StringUtils.lowerCase(patronymic);
+        surname = lowerCase(surname);
+        name = lowerCase(name);
+        patronymic = lowerCase(patronymic);
 
-        surname = StringUtils.capitalize(surname);
-        name = StringUtils.capitalize(name);
-        patronymic = StringUtils.capitalize(patronymic);
+        surname = capitalize(surname);
+        name = capitalize(name);
+        patronymic = capitalize(patronymic);
 
 
         return employeeMap.put(surname + " "
@@ -157,9 +155,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void dismissEmployee(String surname,
                                 String name,
                                 String patronymic) {
-        if (!StringUtils.isAlpha(surname)
-                || !StringUtils.isAlpha(name)
-                || !StringUtils.isAlpha(patronymic)) {
+        if (validateName(surname, name, patronymic)) {
             throw new WrongNameException();
         }
         employeeMap.remove(surname
@@ -189,9 +185,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                       String name,
                                       String patronymic,
                                       int changeSalary) {
-        if (!StringUtils.isAlpha(surname)
-                || !StringUtils.isAlpha(name)
-                || !StringUtils.isAlpha(patronymic)) {
+        if (validateName(surname, name, patronymic)) {
             throw new WrongNameException();
         }
 
@@ -221,9 +215,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                          String name,
                                          String patronymic,
                                          String department) {
-        if (!StringUtils.isAlpha(surname)
-                || !StringUtils.isAlpha(name)
-                || !StringUtils.isAlpha(patronymic)) {
+        if (validateName(surname, name, patronymic)) {
             throw new WrongNameException();
         }
         Employee employee = searchEmployee(surname, name, patronymic);
@@ -246,6 +238,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    public boolean validateName(String surname, String name, String patronymic){
+        return  isAlpha(surname)
+                && !isAlpha(name)
+                && !isAlpha(patronymic);
+        }
+
+    }
 
 //    --------------------------- CLASS END -------------------------
 }
