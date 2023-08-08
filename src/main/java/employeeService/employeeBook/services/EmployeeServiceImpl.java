@@ -1,5 +1,6 @@
 package employeeService.employeeBook.services;
 
+import employeeService.employeeBook.exceptions.WrongNameException;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -24,11 +27,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public int countMonthSalaryExpenses() {
-        int max = employeeMap.values().stream().
+         return employeeMap.values().stream().
                 map(e -> e.getSalary()).
                 mapToInt(Integer::intValue).
                 sum();
-        return max;
+
     }
 
     @Override
@@ -90,6 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee searchEmployee(String surname,
                                    String name,
                                    String patronymic) {
+        validateName(surname, name, patronymic);
         return employeeMap.get(surname + " " + name + " " + patronymic);
 
     }
@@ -120,6 +124,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String patronymic,
                                    String department,
                                    int salary) {
+
+        validateName(surname, name, patronymic);
+
+        surname = capitalize(lowerCase(surname));
+        name = capitalize(lowerCase(name));
+        patronymic = capitalize(lowerCase(patronymic));
+
+
+
         return employeeMap.put(surname + " "
                         + name + " "
                         + patronymic,
@@ -135,6 +148,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void dismissEmployee(String surname,
                                 String name,
                                 String patronymic) {
+        validateName(surname, name, patronymic);
+
         employeeMap.remove(surname
                 + " "
                 + name
@@ -146,6 +161,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void dismissEmployee(int id) {
 
+
         if (searchEmployee(id) != null) {
             employeeMap.remove(searchEmployee(id).getEmployeeInitials());
             System.out.println("Сотрудник уволен");
@@ -155,12 +171,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-//  –––––––––––––––––––––––----- Till that point all in Controller --------------------
+    //  –––––––––––––––––––––––----- Till that point all in Controller --------------------
     @Override
     public void changeEmployeesSalary(String surname,
                                       String name,
                                       String patronymic,
                                       int changeSalary) {
+        validateName(surname, name, patronymic);
 
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
@@ -188,6 +205,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                                          String name,
                                          String patronymic,
                                          String department) {
+        validateName(surname, name, patronymic);
+
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
             employee.setDepartment(department);
@@ -208,6 +227,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    public void validateName(String surname, String name, String patronymic){
+        if (!isAlpha(surname)
+                && !isAlpha(name)
+                && !isAlpha(patronymic)){
+            throw new WrongNameException();
+        }
+
+
+    }
 
 //    --------------------------- CLASS END -------------------------
 }
