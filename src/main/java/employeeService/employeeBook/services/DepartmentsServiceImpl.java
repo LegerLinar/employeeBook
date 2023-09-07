@@ -1,5 +1,6 @@
 package employeeService.employeeBook.services;
 
+import employeeService.employeeBook.exceptions.VoidDepartmentException;
 import employeeService.employeeBook.interfaces.DepartmentsService;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.model.EmployeeBook;
@@ -42,21 +43,19 @@ public class DepartmentsServiceImpl implements DepartmentsService {
                 .orElseThrow();
     }
 
-    public void findEmployeesMaxSalaryOfDep(String department) {
+    public Employee findEmployeesMaxSalaryOfDep(String department) {
         int maxSalary = 0;
-        String employeeName = "";
+        Employee curEmployee = null;
         for (Employee employee : getEmployeesByDep(department)) {
             if (employee.getSalary() > maxSalary || maxSalary == 0) {
                 maxSalary = employee.getSalary();
-                employeeName = employee.getEmployeeInitials();
+                curEmployee = employee;
             }
         }
-        if (employeeName.equals("")) {
-            System.out.println("В указанном отделе нет сотрудников");
-        } else {
-            System.out.println("Сотрудник " + employeeName + " получает наибольшую зарплату в отделе " + department + " - " + maxSalary + "руб.");
+        if (curEmployee == null) {
+            throw new VoidDepartmentException("В указанном отделе нет сотрудников");
         }
-
+        return curEmployee;
 
     }
 
@@ -70,7 +69,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
 
     public double countAverageSalaryOfDep(String department) {
-       return employeeMap.values().stream()
+        return employeeMap.values().stream()
                 .filter(e -> e.getDepartment().contentEquals(department))
                 .map(e -> e.getSalary())
                 .mapToDouble(Integer::doubleValue)
@@ -100,8 +99,8 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
 
     public Map<String, List<Employee>> printAllDepartmentPersonnel() {
-        return  employeeMap.values().stream()
-                .sorted(comparing(Employee:: getSurname))
+        return employeeMap.values().stream()
+                .sorted(comparing(Employee::getSurname))
                 .collect(Collectors.groupingBy(Employee::getDepartment));
 
     }
