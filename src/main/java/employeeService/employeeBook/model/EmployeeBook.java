@@ -1,8 +1,11 @@
 package employeeService.employeeBook.model;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Repository
 public class EmployeeBook{
 
     public EmployeeBook() {
@@ -12,7 +15,7 @@ public class EmployeeBook{
         return employeeMap;
     }
 
-    private static Map<String, Employee> employeeMap = new HashMap<>(Map.of(
+    public static Map<String, Employee> employeeMap = new HashMap<>(Map.of(
             "Кисложопкин Аркадий Васильевич",
             new Employee("Кисложопкин", "Аркадий", "Васильевич", "1", 35000),
             "Селиванов Акакий Александрович",

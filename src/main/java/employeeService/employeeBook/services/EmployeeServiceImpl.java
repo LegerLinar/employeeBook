@@ -4,6 +4,7 @@ import employeeService.employeeBook.exceptions.WrongNameException;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,12 +14,14 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private EmployeeBook employeeBook = new EmployeeBook();
-    private Map<String, Employee> employeeMap = employeeBook.employeeBook();
+    private final EmployeeBook employeeBook;
+    private final Map<String, Employee> employeeMap;
 
-    public EmployeeServiceImpl() {
-
+    public EmployeeServiceImpl(EmployeeBook employeeBook) {
+        this.employeeBook = employeeBook;
+        this.employeeMap = employeeBook.employeeBook();
     }
+
 
     @Override
     public Collection<Employee> printAllEmployeesData() {
@@ -227,7 +230,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public void validateName(String surname, String name, String patronymic){
+    private void validateName(String surname, String name, String patronymic){
         if (!isAlpha(surname)
                 && !isAlpha(name)
                 && !isAlpha(patronymic)){

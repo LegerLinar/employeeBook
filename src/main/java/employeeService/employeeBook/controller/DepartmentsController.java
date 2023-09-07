@@ -56,7 +56,7 @@ public class DepartmentsController {
                 + " : " + departmentsService.printDepartment(department);
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/employees")
     public String getAll() {
         return "Сотрудники" + " : "
                 + departmentsService.printAllDepartmentPersonnel();
