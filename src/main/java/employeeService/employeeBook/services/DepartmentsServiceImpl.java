@@ -2,34 +2,37 @@ package employeeService.employeeBook.services;
 
 import employeeService.employeeBook.exceptions.VoidDepartmentException;
 import employeeService.employeeBook.interfaces.DepartmentsService;
+import employeeService.employeeBook.interfaces.EmployeeService;
 import employeeService.employeeBook.model.Employee;
-import employeeService.employeeBook.model.EmployeeBook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static employeeService.employeeBook.services.EmployeeServiceImpl.employeeBook;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 
 @Service
 public class DepartmentsServiceImpl implements DepartmentsService {
-    private final EmployeeBook employeeBook = new EmployeeBook();
-    Map<String, Employee> employeeMap = employeeBook.employeeBook();
+    
 
-    public DepartmentsServiceImpl() {
+    private final EmployeeService employeeService;
+    public DepartmentsServiceImpl(EmployeeService employeeServiceImpl) {
+        this.employeeService = new EmployeeServiceImpl();
     }
 
 //
 
 
     public Map<String, Employee> getEmployees() {
-        return employeeMap;
+        return employeeBook;
     }
 
 
     public List<Employee> getEmployeesByDep(String department) {
-        return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 filter(e -> e.getDepartment().contentEquals(department)).
                 collect(Collectors.toList());
     }
@@ -37,7 +40,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
     public Employee findEmployeesMinSalaryByDep(String department) {
 
-        return employeeMap.values().stream()
+        return employeeBook.values().stream()
                 .filter(e -> e.getDepartment().contentEquals(department))
                 .min(comparingInt(Employee::getSalary))
                 .orElseThrow();
@@ -60,7 +63,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     }
 
     public int countSummarySalaryOfDep(String department) {
-        return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 filter(e -> e.getDepartment().contentEquals(department))
                 .map(e -> e.getSalary())
                 .mapToInt(Integer::intValue)
@@ -69,7 +72,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 
 
     public double countAverageSalaryOfDep(String department) {
-        return employeeMap.values().stream()
+        return employeeBook.values().stream()
                 .filter(e -> e.getDepartment().contentEquals(department))
                 .map(e -> e.getSalary())
                 .mapToDouble(Integer::doubleValue)
@@ -92,14 +95,14 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     public List<Employee> printDepartment(String department) {
 
 
-        return employeeMap.values().stream()
+        return employeeBook.values().stream()
                 .filter(e -> e.getDepartment().contentEquals(department))
                 .collect(Collectors.toList());
     }
 
 
     public Map<String, List<Employee>> printAllDepartmentPersonnel() {
-        return employeeMap.values().stream()
+        return employeeBook.values().stream()
                 .sorted(comparing(Employee::getSurname))
                 .collect(Collectors.groupingBy(Employee::getDepartment));
 

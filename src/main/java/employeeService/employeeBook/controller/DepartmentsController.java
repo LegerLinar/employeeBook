@@ -3,6 +3,7 @@ package employeeService.employeeBook.controller;
 import employeeService.employeeBook.interfaces.DepartmentsService;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.services.DepartmentsServiceImpl;
+import employeeService.employeeBook.services.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class DepartmentsController {
     private final DepartmentsService departmentsService;
 
     public DepartmentsController(DepartmentsService departmentsService) {
-        this.departmentsService = new DepartmentsServiceImpl();
+        this.departmentsService = new DepartmentsServiceImpl(new EmployeeServiceImpl());
     }
 
     @GetMapping(path = "/{id}/employees/")

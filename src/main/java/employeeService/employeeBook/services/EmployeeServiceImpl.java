@@ -1,10 +1,10 @@
 package employeeService.employeeBook.services;
 
+import employeeService.employeeBook.exceptions.EmployeeAlreadyExistException;
+import employeeService.employeeBook.exceptions.IllegalDepartmentNameException;
 import employeeService.employeeBook.exceptions.WrongNameException;
 import employeeService.employeeBook.model.Employee;
-import employeeService.employeeBook.model.EmployeeBook;
 import employeeService.employeeBook.interfaces.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,23 +14,33 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final EmployeeBook employeeBook;
-    private final Map<String, Employee> employeeMap;
+    public static Map<String, Employee> employeeBook = new HashMap<>(Map.of(
+            "Кисложопкин Аркадий Васильевич",
+            new Employee("Кисложопкин", "Аркадий", "Васильевич", "1", 35000),
+            "Селиванов Акакий Александрович",
+            new Employee("Селиванов", "Акакий", "Александрович", "4", 32000),
+            "Кулиджи Казимир Космосович",
+            new Employee("Кулиджи", "Казимир", "Космосович", "3", 42000),
+            "Франклин Бенджамин Батькович",
+            new Employee("Франклин", "Бенджамин", "Батькович", "5", 200_000),
+            "Джугашвили Иосиф Виссарионович",
+            new Employee("Джугашвили", "Иосиф", "Виссарионович", "5", 1_000),
+            "Хирохито Сёма Ёсихитович",
+            new Employee("Хирохито", "Сёма", "Ёсихитович", "4", 100_000)
+    ));
 
-    public EmployeeServiceImpl(EmployeeBook employeeBook) {
-        this.employeeBook = employeeBook;
-        this.employeeMap = employeeBook.employeeBook();
+    public EmployeeServiceImpl() {
     }
 
 
     @Override
     public Collection<Employee> printAllEmployeesData() {
-        return employeeMap.values();
+        return employeeBook.values();
     }
 
     @Override
     public int countMonthSalaryExpenses() {
-         return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 map(e -> e.getSalary()).
                 mapToInt(Integer::intValue).
                 sum();
@@ -41,11 +51,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findEmployeeMinSalary() {
 
         final int employeeWithMinSalary =
-                employeeMap.values().stream().
+                employeeBook.values().stream().
                         map(e -> e.getSalary()).
                         min(Comparator.naturalOrder()).
                         get();
-        return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 filter(e -> e.getSalary() == employeeWithMinSalary).
                 findFirst().get();
 
@@ -54,18 +64,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployeeMaxSalary() {
-        int max = employeeMap.values().stream().
+        int max = employeeBook.values().stream().
                 map(e -> e.getSalary()).
                 max(Comparator.naturalOrder()).get();
 
-        return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 filter(e -> e.getSalary() == max).
                 findFirst().get();
     }
 
     @Override
     public double countAverageMonthSalary() {
-        return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 map(e -> e.getSalary()).
                 mapToInt(Integer::intValue).
                 average().getAsDouble();
@@ -73,21 +83,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Set<String> showEmployeesNames() {
-        return employeeMap.keySet();
+        return employeeBook.keySet();
     }
 
     @Override
     public Set<Employee> searchWhoEarnLess(int salary) {
 
         return
-                employeeMap.values().stream().
+                employeeBook.values().stream().
                         filter(e -> e.getSalary() < salary).
                         collect(Collectors.toSet());
     }
 
     @Override
     public void printWhoEarnMore(int salary) {
-        employeeMap.values().stream().
+        employeeBook.values().stream().
                 filter(e -> e.getSalary() > salary).
                 collect(Collectors.toSet());
     }
@@ -96,15 +106,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee searchEmployee(String surname,
                                    String name,
                                    String patronymic) {
-        validateName(surname, name, patronymic);
-        return employeeMap.get(surname + " " + name + " " + patronymic);
+        validateEmployee(surname, name, patronymic);
+        return employeeBook.get(surname + " " + name + " " + patronymic);
 
     }
 
     @Override
     public Employee searchEmployee(int id) {
 
-        return employeeMap.values().stream().
+        return employeeBook.values().stream().
                 filter(e -> e.getId() == id).
                 findFirst().
                 get();
@@ -114,7 +124,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void toIndexSalary(int percent) {
 
         int increaseAmount;
-        for (Employee employee : employeeMap.values()) {
+        for (Employee employee : employeeBook.values()) {
             increaseAmount = employee.getSalary() * percent / 100;
             employee.setSalary(employee.getSalary() + increaseAmount);
         }
@@ -128,15 +138,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String department,
                                    int salary) {
 
-        validateName(surname, name, patronymic);
+        validateEmployee(surname, name, patronymic);
+        validateDepartment(department);
 
         surname = capitalize(lowerCase(surname));
         name = capitalize(lowerCase(name));
         patronymic = capitalize(lowerCase(patronymic));
 
-
-
-        return employeeMap.put(surname + " "
+        return employeeBook.put(surname + " "
                         + name + " "
                         + patronymic,
                 new Employee(surname,
@@ -151,9 +160,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void dismissEmployee(String surname,
                                 String name,
                                 String patronymic) {
-        validateName(surname, name, patronymic);
+        validateEmployee(surname, name, patronymic);
 
-        employeeMap.remove(surname
+        employeeBook.remove(surname
                 + " "
                 + name
                 + " "
@@ -166,7 +175,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
         if (searchEmployee(id) != null) {
-            employeeMap.remove(searchEmployee(id).getEmployeeInitials());
+            employeeBook.remove(searchEmployee(id).getEmployeeInitials());
             System.out.println("Сотрудник уволен");
         } else {
             System.out.println("Сотрудник не найден");
@@ -180,7 +189,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                       String name,
                                       String patronymic,
                                       int changeSalary) {
-        validateName(surname, name, patronymic);
+        validateEmployee(surname, name, patronymic);
 
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
@@ -208,7 +217,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                          String name,
                                          String patronymic,
                                          String department) {
-        validateName(surname, name, patronymic);
+        validateEmployee(surname, name, patronymic);
 
         Employee employee = searchEmployee(surname, name, patronymic);
         if (employee != null) {
@@ -230,15 +239,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    private void validateName(String surname, String name, String patronymic){
+    private void validateEmployee(String surname, String name, String patronymic) {
         if (!isAlpha(surname)
                 && !isAlpha(name)
-                && !isAlpha(patronymic)){
-            throw new WrongNameException();
+                && !isAlpha(patronymic)) {
+            throw new WrongNameException("Имя должно состоять только из строчных символов");
+        }
+        if (employeeBook.keySet().contains(surname + " "
+                + name + " "
+                + patronymic)) {
+            throw new EmployeeAlreadyExistException("Сотрудник с таким именем уже в штате");
         }
 
 
     }
+
+    private void validateDepartment(String department) {
+        if (!Employee.getDepartments().contains(department)) {
+            throw new IllegalDepartmentNameException("Такого отдела не существует");
+        }
+    }
+
+
 
 //    --------------------------- CLASS END -------------------------
 }
