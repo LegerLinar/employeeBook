@@ -10,7 +10,7 @@ public interface EmployeeService {
                                    String name,
                                    String patronymic);
     Employee searchEmployee(int id);
-    Employee addNewEmployee(String surname,
+    String addNewEmployee(String surname,
                             String name,
                             String patronymic,
                             String department,

@@ -14,20 +14,22 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    public static Map<String, Employee> employeeBook = new HashMap<>(Map.of(
-            "Кисложопкин Аркадий Васильевич",
-            new Employee("Кисложопкин", "Аркадий", "Васильевич", "1", 35000),
-            "Селиванов Акакий Александрович",
-            new Employee("Селиванов", "Акакий", "Александрович", "4", 32000),
-            "Кулиджи Казимир Космосович",
-            new Employee("Кулиджи", "Казимир", "Космосович", "3", 42000),
-            "Франклин Бенджамин Батькович",
-            new Employee("Франклин", "Бенджамин", "Батькович", "5", 200_000),
-            "Джугашвили Иосиф Виссарионович",
-            new Employee("Джугашвили", "Иосиф", "Виссарионович", "5", 1_000),
-            "Хирохито Сёма Ёсихитович",
-            new Employee("Хирохито", "Сёма", "Ёсихитович", "4", 100_000)
-    ));
+    public static Map<String, Employee> employeeBook = new HashMap<>(
+//            Map.of(
+//            "Кисложопкин Аркадий Васильевич",
+//            new Employee("Кисложопкин", "Аркадий", "Васильевич", "1", 35000),
+//            "Селиванов Акакий Александрович",
+//            new Employee("Селиванов", "Акакий", "Александрович", "4", 32000),
+//            "Кулиджи Казимир Космосович",
+//            new Employee("Кулиджи", "Казимир", "Космосович", "3", 42000),
+//            "Франклин Бенджамин Батькович",
+//            new Employee("Франклин", "Бенджамин", "Батькович", "5", 200_000),
+//            "Джугашвили Иосиф Виссарионович",
+//            new Employee("Джугашвили", "Иосиф", "Виссарионович", "5", 1_000),
+//            "Хирохито Сёма Ёсихитович",
+//            new Employee("Хирохито", "Сёма", "Ёсихитович", "4", 100_000)
+//    )
+    );
 
     public EmployeeServiceImpl() {
     }
@@ -132,7 +134,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee addNewEmployee(String surname,
+    public String addNewEmployee(String surname,
                                    String name,
                                    String patronymic,
                                    String department,
@@ -145,7 +147,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         name = capitalize(lowerCase(name));
         patronymic = capitalize(lowerCase(patronymic));
 
-        return employeeBook.put(surname + " "
+        Employee result = employeeBook.put(surname + " "
                         + name + " "
                         + patronymic,
                 new Employee(surname,
@@ -153,7 +155,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                         patronymic,
                         department,
                         salary));
-//        System.out.println("Добавлен");
+        if(result == null) {
+            return "Сотрудник добавлен";
+        } else{
+            throw new EmployeeAlreadyExistException("Сотрудник с таким именем уже в штате");
+        }
     }
 
     @Override
@@ -245,13 +251,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 && !isAlpha(patronymic)) {
             throw new WrongNameException("Имя должно состоять только из строчных символов");
         }
-        if (employeeBook.keySet().contains(surname + " "
-                + name + " "
-                + patronymic)) {
-            throw new EmployeeAlreadyExistException("Сотрудник с таким именем уже в штате");
-        }
-
-
     }
 
     private void validateDepartment(String department) {

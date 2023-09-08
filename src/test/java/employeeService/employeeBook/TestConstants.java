@@ -18,5 +18,11 @@ public class TestConstants {
     public static final String NORMAL_NAME = "Иван";
     public static final String NORMAL_SURNAME = "Иванов";
     public static final String NORMAL_PATRONYMIC= "Иванович";
+    public static final String NORMAL_DEPARTMENT = "2";
+    public static final String NULL_NAME = null;
+    public static final String NULL_SURNAME = null;
+    public static final String NULL_PATRONYMIC = null;
+    public static final String NULL_DEPARTMENT = null;
+    public static final int BASIC_SALARY = 15_000;
 
 }

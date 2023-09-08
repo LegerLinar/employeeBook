@@ -94,7 +94,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && surname.equals(employee.surname) && name.equals(employee.name) && patronymic.equals(employee.patronymic);
+        return surname.equals(employee.surname) && name.equals(employee.name) && patronymic.equals(employee.patronymic);
     }
 
     @Override
