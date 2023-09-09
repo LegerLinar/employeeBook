@@ -44,7 +44,7 @@ public interface EmployeeService {
     Collection<Employee> printAllEmployeesData();
     Set<String> showEmployeesNames();
     Set<Employee> searchWhoEarnLess(int salary);
-    void printWhoEarnMore(int salary);
+    Set<Employee> searchWhoEarnMore(int salary);
 
 
 

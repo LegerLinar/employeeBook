@@ -1,8 +1,6 @@
 package employeeService.employeeBook.services;
 
-import employeeService.employeeBook.exceptions.EmployeeAlreadyExistException;
-import employeeService.employeeBook.exceptions.IllegalDepartmentNameException;
-import employeeService.employeeBook.exceptions.WrongNameException;
+import employeeService.employeeBook.exceptions.*;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.interfaces.EmployeeService;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
+
     public static Map<String, Employee> employeeBook = new HashMap<>(
 //            Map.of(
 //            "Кисложопкин Аркадий Васильевич",
@@ -36,7 +36,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
+    public String addNewEmployee(String surname,
+                                 String name,
+                                 String patronymic,
+                                 String department,
+                                 int salary) {
+
+        validateEmployee(surname, name, patronymic);
+        validateDepartment(department);
+
+        surname = capitalize(lowerCase(surname));
+        name = capitalize(lowerCase(name));
+        patronymic = capitalize(lowerCase(patronymic));
+
+        Employee result = employeeBook.put(surname + " "
+                        + name + " "
+                        + patronymic,
+                new Employee(surname,
+                        name,
+                        patronymic,
+                        department,
+                        salary));
+        if(result == null) {
+            return "Сотрудник добавлен";
+        } else{
+            throw new EmployeeAlreadyExistException("Сотрудник с таким именем уже в штате");
+        }
+    }
+    @Override
     public Collection<Employee> printAllEmployeesData() {
+        if(employeeBook.values().size() == 0){
+            throw new VoidDepartmentException("Нет сотрудников");
+        }
         return employeeBook.values();
     }
 
@@ -97,8 +128,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                         collect(Collectors.toSet());
     }
 
+
     @Override
-    public void printWhoEarnMore(int salary) {
+    public Set<Employee> searchWhoEarnMore(int salary) {
+        return
         employeeBook.values().stream().
                 filter(e -> e.getSalary() > salary).
                 collect(Collectors.toSet());
@@ -109,17 +142,25 @@ public class EmployeeServiceImpl implements EmployeeService {
                                    String name,
                                    String patronymic) {
         validateEmployee(surname, name, patronymic);
-        return employeeBook.get(surname + " " + name + " " + patronymic);
+        Employee result = employeeBook.get(surname + " " + name + " " + patronymic);
+        if(result == null){
+            throw new EmployeeNotExistException("Указанного сотрудника нет в штате");
+        }
+        return result;
 
     }
 
     @Override
     public Employee searchEmployee(int id) {
 
-        return employeeBook.values().stream().
+        Employee result = employeeBook.values().stream().
                 filter(e -> e.getId() == id).
                 findFirst().
                 get();
+        if(result == null){
+            throw new EmployeeNotExistException("Указанного сотрудника нет в штате");
+        }
+        return result;
     }
 
     @Override
@@ -131,35 +172,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setSalary(employee.getSalary() + increaseAmount);
         }
 
-    }
-
-    @Override
-    public String addNewEmployee(String surname,
-                                   String name,
-                                   String patronymic,
-                                   String department,
-                                   int salary) {
-
-        validateEmployee(surname, name, patronymic);
-        validateDepartment(department);
-
-        surname = capitalize(lowerCase(surname));
-        name = capitalize(lowerCase(name));
-        patronymic = capitalize(lowerCase(patronymic));
-
-        Employee result = employeeBook.put(surname + " "
-                        + name + " "
-                        + patronymic,
-                new Employee(surname,
-                        name,
-                        patronymic,
-                        department,
-                        salary));
-        if(result == null) {
-            return "Сотрудник добавлен";
-        } else{
-            throw new EmployeeAlreadyExistException("Сотрудник с таким именем уже в штате");
-        }
     }
 
     @Override
@@ -246,10 +258,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private void validateEmployee(String surname, String name, String patronymic) {
-        if (!isAlpha(surname)
+        if ((!isAlpha(surname)
                 && !isAlpha(name)
-                && !isAlpha(patronymic)) {
+                && !isAlpha(patronymic))) {
             throw new WrongNameException("Имя должно состоять только из строчных символов");
+        }
+        if(surname == null || name == null || patronymic == null){
+            throw new WrongNameException("Пожалуйста, введите имя сотрудника");
         }
     }
 
@@ -259,7 +274,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-
+    public static Map<String, Employee> getEmployeeBook() {
+        return employeeBook;
+    }
 
 //    --------------------------- CLASS END -------------------------
 }

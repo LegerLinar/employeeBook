@@ -25,4 +25,5 @@ public class TestConstants {
     public static final String NULL_DEPARTMENT = null;
     public static final int BASIC_SALARY = 15_000;
 
+
 }

@@ -1,5 +1,7 @@
 package employeeService.employeeBook.model;
 
+import employeeService.employeeBook.exceptions.IllegalDepartmentNameException;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -77,10 +79,10 @@ public class Employee {
     }
 
     public void setDepartment(String department) {
-        for (String departmentName : departments) {
-            if (departmentName.equals(department)) {
-                this.department = department;
-            }
+        if(departments.contains(department)){
+            this.department = department;
+        } else{
+            throw new IllegalDepartmentNameException("Указанный отдел не найден");
         }
     }
 
