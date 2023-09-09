@@ -216,7 +216,7 @@ public class EmployeeServiceImplTests {
     @Test
     public void shouldCountMonthSalaryExpenses() {
         out.addNewEmployee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, NORMAL_DEPARTMENT, BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "FF", NORMAL_NAME + "FF", NORMAL_PATRONYMIC + "FF", NORMAL_DEPARTMENT, BASIC_SALARY);
+        out.addNewEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, NORMAL_DEPARTMENT, BASIC_SALARY);
         int expected = BASIC_SALARY + BASIC_SALARY;
 
         assertEquals(expected, out.countMonthSalaryExpenses());
@@ -227,9 +227,9 @@ public class EmployeeServiceImplTests {
     @Test
     public void shouldFindEmployeeMinSalary() {
         out.addNewEmployee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, NORMAL_DEPARTMENT, 2 * BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "ff", NORMAL_NAME + "ff", NORMAL_PATRONYMIC + "ff", NORMAL_DEPARTMENT, BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "fff", NORMAL_NAME + "fff", NORMAL_PATRONYMIC + "fff", NORMAL_DEPARTMENT, 3 * BASIC_SALARY);
-        Employee expected = out.searchEmployee(NORMAL_SURNAME + "ff", NORMAL_NAME + "ff", NORMAL_PATRONYMIC + "ff");
+        out.addNewEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, NORMAL_DEPARTMENT, BASIC_SALARY);
+        out.addNewEmployee(NORMAL_THIRD_SURNAME, NORMAL_THIRD_NAME, NORMAL_THIRD_PATRONYMIC, NORMAL_DEPARTMENT, 3 * BASIC_SALARY);
+        Employee expected = out.searchEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC);
 
         assertEquals(expected, out.findEmployeeMinSalary());
     }
@@ -238,8 +238,8 @@ public class EmployeeServiceImplTests {
     @Test
     public void findEmployeeMaxSalary() {
         out.addNewEmployee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, NORMAL_DEPARTMENT, 2 * BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "ff", NORMAL_NAME + "ff", NORMAL_PATRONYMIC + "ff", NORMAL_DEPARTMENT, BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "fff", NORMAL_NAME + "fff", NORMAL_PATRONYMIC + "fff", NORMAL_DEPARTMENT, 3 * BASIC_SALARY);
+        out.addNewEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, NORMAL_DEPARTMENT, BASIC_SALARY);
+        out.addNewEmployee(NORMAL_THIRD_SURNAME, NORMAL_THIRD_NAME, NORMAL_THIRD_PATRONYMIC, NORMAL_DEPARTMENT, 3 * BASIC_SALARY);
         Employee expected = out.searchEmployee(3);
 
         assertEquals(expected, out.findEmployeeMaxSalary());
@@ -249,8 +249,8 @@ public class EmployeeServiceImplTests {
     @Test
     public void shouldCountAverageMonthSalary() {
         out.addNewEmployee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, NORMAL_DEPARTMENT, 2 * BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "ff", NORMAL_NAME + "ff", NORMAL_PATRONYMIC + "ff", NORMAL_DEPARTMENT, BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME + "fff", NORMAL_NAME + "fff", NORMAL_PATRONYMIC + "fff", NORMAL_DEPARTMENT, 3 * BASIC_SALARY);
+        out.addNewEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, NORMAL_DEPARTMENT, BASIC_SALARY);
+        out.addNewEmployee(NORMAL_THIRD_SURNAME, NORMAL_THIRD_NAME, NORMAL_THIRD_PATRONYMIC, NORMAL_DEPARTMENT, 3 * BASIC_SALARY);
 
         double expected = (out.searchEmployee(1).getSalary() + out.searchEmployee(2).getSalary() + out.searchEmployee(3).getSalary()) / 3;
 
@@ -347,8 +347,8 @@ public class EmployeeServiceImplTests {
     @Test
     public void shouldSearchWhoEarnLess() {
         out.addNewEmployee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, "2", BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME+ "ff", NORMAL_NAME+ "ff", NORMAL_PATRONYMIC+ "ff", "2", BASIC_SALARY * 3);
-        out.addNewEmployee(NORMAL_SURNAME + "f", NORMAL_NAME + "f", NORMAL_PATRONYMIC + "f", "2", BASIC_SALARY * 2);
+        out.addNewEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, "2", BASIC_SALARY * 3);
+        out.addNewEmployee(NORMAL_THIRD_SURNAME, NORMAL_THIRD_NAME, NORMAL_THIRD_PATRONYMIC, "2", BASIC_SALARY * 2);
 
         Set<Employee> expected = new HashSet<>(Set.of(
                 new Employee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, "2", BASIC_SALARY)
@@ -361,11 +361,11 @@ public class EmployeeServiceImplTests {
     @Test
     public void shouldPrintWhoEarnMore() {
         out.addNewEmployee(NORMAL_SURNAME, NORMAL_NAME, NORMAL_PATRONYMIC, "2", BASIC_SALARY);
-        out.addNewEmployee(NORMAL_SURNAME+ "ff", NORMAL_NAME+ "ff", NORMAL_PATRONYMIC+ "ff", "2", BASIC_SALARY * 3);
-        out.addNewEmployee(NORMAL_SURNAME + "f", NORMAL_NAME + "f", NORMAL_PATRONYMIC + "f", "2", BASIC_SALARY * 2);
+        out.addNewEmployee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, "2", BASIC_SALARY * 3);
+        out.addNewEmployee(NORMAL_THIRD_SURNAME, NORMAL_THIRD_NAME, NORMAL_THIRD_PATRONYMIC, "2", BASIC_SALARY * 2);
 
         Set<Employee> expected = new HashSet<>(Set.of(
-                new Employee(NORMAL_SURNAME+ "ff", NORMAL_NAME+ "ff", NORMAL_PATRONYMIC+ "ff", "2", BASIC_SALARY * 3)
+                new Employee(NORMAL_SECOND_SURNAME, NORMAL_SECOND_NAME, NORMAL_SECOND_PATRONYMIC, "2", BASIC_SALARY * 3)
         ));
         assertEquals(1, out.searchWhoEarnMore(BASIC_SALARY * 2).size());
         assertIterableEquals(expected, out.searchWhoEarnMore(BASIC_SALARY * 2));

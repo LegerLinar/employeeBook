@@ -16,8 +16,14 @@ public class TestConstants {
     public static final String NON_CAPITALIZE_SURNAME = "иванов";
     public static final String NON_CAPITALIZE_PATRONYMIC = "иванович";
     public static final String NORMAL_NAME = "Иван";
+    public static final String NORMAL_THIRD_NAME = "Василий";
+    public static final String NORMAL_SECOND_NAME = "Петр";
     public static final String NORMAL_SURNAME = "Иванов";
+    public static final String NORMAL_THIRD_SURNAME = "Васильев";
+    public static final String NORMAL_SECOND_SURNAME = "Петров";
     public static final String NORMAL_PATRONYMIC= "Иванович";
+    public static final String NORMAL_THIRD_PATRONYMIC= "Васильевич";
+    public static final String NORMAL_SECOND_PATRONYMIC= "Петрович";
     public static final String NORMAL_DEPARTMENT = "2";
     public static final String NULL_NAME = null;
     public static final String NULL_SURNAME = null;
