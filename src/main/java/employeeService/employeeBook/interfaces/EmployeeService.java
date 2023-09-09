@@ -3,6 +3,7 @@ package employeeService.employeeBook.interfaces;
 import employeeService.employeeBook.model.Employee;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 public interface EmployeeService {
@@ -46,6 +47,7 @@ public interface EmployeeService {
     Set<Employee> searchWhoEarnLess(int salary);
     Set<Employee> searchWhoEarnMore(int salary);
 
+    Map<String, Employee> getEmployeeBook();
 
 
 }

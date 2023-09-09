@@ -274,7 +274,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public static Map<String, Employee> getEmployeeBook() {
+    public Map<String, Employee> getEmployeeBook() {
         return employeeBook;
     }
 

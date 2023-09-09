@@ -1,49 +1,57 @@
 package employeeService.employeeBook.services;
 
+import employeeService.employeeBook.exceptions.IllegalDepartmentNameException;
 import employeeService.employeeBook.exceptions.VoidDepartmentException;
 import employeeService.employeeBook.interfaces.DepartmentsService;
 import employeeService.employeeBook.interfaces.EmployeeService;
 import employeeService.employeeBook.model.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static employeeService.employeeBook.services.EmployeeServiceImpl.employeeBook;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 
 @Service
 public class DepartmentsServiceImpl implements DepartmentsService {
-    
+
 
     private final EmployeeService employeeService;
+
     public DepartmentsServiceImpl(EmployeeService employeeServiceImpl) {
-        this.employeeService = new EmployeeServiceImpl();
+        this.employeeService = employeeServiceImpl;
     }
 
 //
 
 
     public Map<String, Employee> getEmployees() {
-        return employeeBook;
+        return employeeService.getEmployeeBook();
     }
 
 
     public List<Employee> getEmployeesByDep(String department) {
-        return employeeBook.values().stream().
+       verifyDepartment(department);
+        List<Employee> cur = employeeService.getEmployeeBook().values().stream().
                 filter(e -> e.getDepartment().contentEquals(department)).
                 collect(Collectors.toList());
+
+        if(cur.isEmpty()){
+            throw new VoidDepartmentException("В отделе нет сотрудников");
+        }
+        return cur;
     }
 
 
     public Employee findEmployeesMinSalaryByDep(String department) {
-
-        return employeeBook.values().stream()
-                .filter(e -> e.getDepartment().contentEquals(department))
+        Employee cur = getEmployeesByDep(department).stream()
                 .min(comparingInt(Employee::getSalary))
                 .orElseThrow();
+        if(cur == null){
+            throw new VoidDepartmentException("В указанном отделе нет сотрудников");
+        }
+        return cur;
     }
 
     public Employee findEmployeesMaxSalaryOfDep(String department) {
@@ -55,25 +63,24 @@ public class DepartmentsServiceImpl implements DepartmentsService {
                 curEmployee = employee;
             }
         }
-        if (curEmployee == null) {
-            throw new VoidDepartmentException("В указанном отделе нет сотрудников");
-        }
         return curEmployee;
 
     }
 
-    public int countSummarySalaryOfDep(String department) {
-        return employeeBook.values().stream().
-                filter(e -> e.getDepartment().contentEquals(department))
+    public double countSummarySalaryOfDep(String department) {
+        if(getEmployeesByDep(department).isEmpty()){
+            throw new VoidDepartmentException("В указанном отделе нет сотрудников");
+        }
+        double result = getEmployeesByDep(department).stream()
                 .map(e -> e.getSalary())
-                .mapToInt(Integer::intValue)
+                .mapToDouble(Integer::doubleValue)
                 .sum();
+        return result;
     }
 
 
     public double countAverageSalaryOfDep(String department) {
-        return employeeBook.values().stream()
-                .filter(e -> e.getDepartment().contentEquals(department))
+        return getEmployeesByDep(department).stream()
                 .map(e -> e.getSalary())
                 .mapToDouble(Integer::doubleValue)
                 .average().getAsDouble();
@@ -93,19 +100,22 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     }
 
     public List<Employee> printDepartment(String department) {
-
-
-        return employeeBook.values().stream()
-                .filter(e -> e.getDepartment().contentEquals(department))
+        return getEmployeesByDep(department).stream()
                 .collect(Collectors.toList());
     }
 
 
     public Map<String, List<Employee>> printAllDepartmentPersonnel() {
-        return employeeBook.values().stream()
+        return employeeService.getEmployeeBook().values().stream()
                 .sorted(comparing(Employee::getSurname))
                 .collect(Collectors.groupingBy(Employee::getDepartment));
 
+    }
+
+    private void verifyDepartment(String department) {
+        if(!Employee.getDepartments().contains(department)){
+            throw new IllegalDepartmentNameException("Указан несуществующий отдел");
+        }
     }
 //    Class End ––––––––––––––––––––––––
 }

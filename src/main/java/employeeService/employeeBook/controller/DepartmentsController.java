@@ -14,7 +14,7 @@ public class DepartmentsController {
     private final DepartmentsService departmentsService;
 
     public DepartmentsController(DepartmentsService departmentsService) {
-        this.departmentsService = new DepartmentsServiceImpl(new EmployeeServiceImpl());
+        this.departmentsService = departmentsService;
     }
 
     @GetMapping(path = "/{id}/employees/")
