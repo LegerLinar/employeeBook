@@ -3,10 +3,8 @@ package employeeService.employeeBook.controller;
 import employeeService.employeeBook.interfaces.DepartmentsService;
 import employeeService.employeeBook.model.Employee;
 import employeeService.employeeBook.services.DepartmentsServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import employeeService.employeeBook.services.EmployeeServiceImpl;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,46 +14,51 @@ public class DepartmentsController {
     private final DepartmentsService departmentsService;
 
     public DepartmentsController(DepartmentsService departmentsService) {
-        this.departmentsService = new DepartmentsServiceImpl();
+        this.departmentsService = departmentsService;
     }
 
-    @GetMapping(path = "/staffofdepartment")
+    @GetMapping(path = "/{id}/employees/")
     public String getEmployeesByDep(
-            @RequestParam("department") String department) {
-        return "" + departmentsService.getEmployeesByDep(department);
+            @PathVariable String id) {
+        return "" + departmentsService.getEmployeesByDep(id);
     }
 
-    @GetMapping(path = "/depminsalary")
-    public String findEmployeesMinSalaryByDep(
-            @RequestParam("department") String department) {
-        return "" + departmentsService.findEmployeesMinSalaryByDep(department);
-    }
-
-    @GetMapping(path = "/departmentsalary")
+    @GetMapping(path = "/{id}/salary/sum")
     public String countSummarySalaryOfDep(
-            @RequestParam("department") String department) {
-        return "Суммарная заработная плата отдела " + department +
-                " : " + departmentsService.countSummarySalaryOfDep(department)
+            @PathVariable String id) {
+        return "Суммарная заработная плата отдела " + id +
+                " : " + departmentsService.countSummarySalaryOfDep(id)
+                + "руб.";
+
+    }
+    @GetMapping(path = "/{id}/salary/average")
+    public String countAverageSalary(
+            @PathVariable("id") String id) {
+        return "Средняя заработная плата в отделе " + id +
+                " : " + departmentsService.countAverageSalaryOfDep(id)
                 + "руб.";
     }
 
-    @GetMapping(path = "/averagesalary")
-    public String countAverageSalary(
-            @RequestParam("department") String department){
-        return "Средняя заработная плата в отделе " + department +
-                " : " + departmentsService.countAverageSalaryOfDep(department)
-                + "руб.";
+    @GetMapping(path = "/{id}/salary/min")
+    public String findEmployeesMinSalaryByDep(
+            @PathVariable("id") String id) {
+        return "" + departmentsService.findEmployeesMinSalaryByDep(id);
+    }
+    @GetMapping(path = "/{id}/salary/max")
+    public String findEmployeesMaxSalaryByDep(
+            @PathVariable("id") String id) {
+        return "" + departmentsService.findEmployeesMaxSalaryOfDep(id);
     }
 
     @GetMapping(path = "/print")
     public String printDepartment(
-            @RequestParam("department") String department){
+            @RequestParam("department") String department) {
         return "Сотрудники отдела " + department
                 + " : " + departmentsService.printDepartment(department);
     }
 
-    @GetMapping(path = "/all")
-    public String getAll(){
+    @GetMapping(path = "/employees")
+    public String getAll() {
         return "Сотрудники" + " : "
                 + departmentsService.printAllDepartmentPersonnel();
     }
